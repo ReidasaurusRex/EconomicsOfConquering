@@ -1,0 +1,146 @@
+/******************* Player 1 ********************/
+.player1 {
+	position: absolute;
+	top: 500px;
+	left: 625px;
+	height: 20px;
+	width: 20px;
+	background-color: red;
+}
+
+
+
+/************* Left Column Styling ***************/
+.playerIndicator {
+	position: absolute;
+	top: 300px;
+	left: 30px;
+}
+
+.playerIndicator h3 {
+	color: gray;
+	font-size: 1.6em;
+}
+
+.turn {
+	position: absolute;
+	top: 400px;
+	left: 85px;
+}
+
+input[type=submit] {
+	font-size: 1.4em;
+	background: white;
+	color: gray;
+	border: 0;
+	cursor: pointer;
+}
+/******************************************************/
+
+/********************* Board **************************/
+/**************** General Properties ******************/
+.tile {
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	border: solid 5px white;
+	background-color: black;
+	z-index: -5;
+}
+
+.water {
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	border: solid 5px blue;
+	background-color: blue;
+	z-index: -6;
+}
+/*******************************************************/
+
+/****************** Row Settings ***********************/
+.rowA div {
+	top: 150px;
+}
+
+.rowB div {
+	top: 230px;
+}
+
+.rowC div {
+	top: 310px;
+}
+
+.rowD div {
+	top: 390px;
+}
+
+.rowE div {
+	top: 470px;
+}
+
+.rowF div {
+	top: 550px;
+}
+
+.rowG div {
+	top: 630px;
+}
+
+.rowH div {
+	top: 710px;
+}
+
+.rowI div {
+	top: 790px;
+	margin-bottom: 150px;
+}
+/*********************************************************/
+
+/****************** Column Settings **********************/
+.A {
+	left: 275px;
+}
+
+.B {
+	left: 355px;
+}
+
+.C {
+	left: 435px;
+}
+
+.D {
+	left: 515px;
+}
+
+.E {
+	left: 595px;
+}
+
+.F {
+	left: 675px;
+}
+
+.G {
+	left: 755px;
+}
+
+.H {
+	left: 835px;
+}
+
+.I {
+	left: 915px;
+}
+/***********************************************************/
+
+/********************** Value Settings *********************/
+.v1 {
+	background-color: white;
+}
+
+.v2 {
+	background-color: #b0b0b0;
+}
+/************************************************************/
