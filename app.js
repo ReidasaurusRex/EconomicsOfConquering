@@ -38,8 +38,8 @@ Player.prototype.move = function(thisDom) {
 					// Ensuring players cannot move on top of one another
 					if ((thisDom.css("left") != game.player1.dom.css("left")) && (thisDom.css("top") != game.player1.dom.css("left"))){
 						game.currentTile = thisDom;
-						this.dom.css("left", ((parseInt((thisDom.css("left")), 10) + 30)));
-						this.dom.css("top", ((parseInt((thisDom.css("top")), 10) + 30)));
+						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 30))}, 500);
+						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
 						// thisDom.addClass("player"+this.num+"Owned");
 						console.log(game.currentTile);
 						// See if state correlating to move counter
@@ -62,7 +62,7 @@ function Game() {
 	this.player1 = new Player(1, "465px", "340px", "red");
 	this.player2 = new Player(2, "785px", "660px", "yellow");
 	this.currentPlayer = this.player1;
-	setInterval(this.logic.bind(this), 1);
+	this.logicId = setInterval(this.logic.bind(this), 1);
 	$(".purchasePrompt").hide().css("visibility", "visible");
 	this.currentTile = $(".rowC .C");
 	console.log(this.currentTile);
@@ -71,8 +71,14 @@ function Game() {
 
 // *********************** Turn Function ****************************
 Game.prototype.turnChange = function() {
+	var self = this;
 	this.player1.moveCounter = 0;
 	this.player2.moveCounter = 0;
+
+	$(".player"+this.currentPlayer.num+"Owned").each(function(){
+		self.currentPlayer.balance += 25;
+		console.log(self.currentPlayer.balance);
+	});
 	
 	if (this.turnCounter === 1) {
 		this.turnCounter++;
@@ -87,9 +93,22 @@ Game.prototype.turnChange = function() {
 
 // *********************** Purchase Function ************************
 Game.prototype.purchase = function() {
-	this.currentPlayer.balance = (this.currentPlayer.balance - 100);
-	this.currentTile.addClass("player"+this.currentPlayer.num+"Owned").addClass("owned");
-	$(".purchasePrompt").fadeOut(500);
+	if (this.currentTile.hasClass("owned")) {
+		if (this.currentPlayer.balance >= 200) {
+			this.currentTile.removeClass("player1Owned player2Owned");
+			$(".purchasePrompt").fadeOut(500);
+			this.currentPlayer.balance = (this.currentPlayer.balance - 200);
+			this.currentTile.addClass("player"+this.currentPlayer.num+"Owned");
+		}
+	}
+	if (!this.currentTile.hasClass("owned")) {
+		if (this.currentPlayer.balance >= 100) {
+			this.currentPlayer.balance = (this.currentPlayer.balance - 100);
+			this.currentTile.addClass("owned");
+			this.currentTile.addClass("player"+this.currentPlayer.num+"Owned");
+			$(".purchasePrompt").fadeOut(500);
+		}
+	}
 };
 // ******************************************************************
 
@@ -123,7 +142,8 @@ Game.prototype.attachListeners = function() {
 
 // ******************* Logic function *******************************
 Game.prototype.logic = function() {
-	
+	var self = this;
+
 	if (this.turnCounter === 1) {
 		this.currentPlayer = this.player1;
 	}
