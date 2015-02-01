@@ -1,14 +1,21 @@
+/********************* General ************************/
+h3 {
+	color: gray;
+	cursor: default;
+}
+/******************************************************/
+
 /********************* Player 1 ***********************/
 .player1 {
 	position: absolute;
-	/*top: 500px;
-	left: 625px;*/
 	height: 20px;
 	width: 20px;
-	/*background-color: red;*/
 	z-index: 1;
 }
 
+/******************************************************/
+
+/********************* Player 2 ***********************/
 .player2 {
 	position: absolute;
 	height: 20px;
@@ -21,11 +28,10 @@
 .playerIndicator {
 	position: absolute;
 	top: 300px;
-	left: 30px;
+	left: 60px;
 }
 
 .playerIndicator h3 {
-	color: gray;
 	font-size: 1.6em;
 }
 
@@ -42,6 +48,74 @@ input[type=submit] {
 	border: 0;
 	cursor: pointer;
 }
+
+input:focus {
+	outline: none;
+}
+/******************************************************/
+
+/************** Right Column Styling ******************/
+/***************** Balances ***************************/
+.balances {
+	position: absolute;
+	top: 500px;
+	left: 50px;
+}
+
+.balances span {
+	margin-left: 20px;
+}
+
+.playerBalances {
+	position: absolute;
+	top: 90px;
+	left: 22px;
+}
+
+.playerBalances h3 {
+	display: inline-block;
+}
+
+
+.playerBalances h3:last-child {
+	margin-left: 65px;
+}
+
+.balances h3 {
+	font-size: 1.4em;
+}
+
+.balances > h3:first-child {
+	font-size: 1.6em;
+	margin-left: 40px;
+}
+/******************************************************/
+
+/****************** Purchase Prompt *******************/
+.purchasePrompt {
+	position: absolute;
+	top: 300px;
+	left: 1021px;
+	visibility: hidden;
+}
+
+.purchasePrompt h3 {
+	font-size: 1.4em;
+}
+
+.yesNo h3 {
+	display: inline-block;
+	cursor: pointer;
+}
+
+.purchaseYes {
+	margin-left: 55px;
+}
+
+.purchaseNo {
+	margin-left: 40px;
+}
+/******************************************************/
 /******************************************************/
 
 /********************* Board **************************/
@@ -151,3 +225,14 @@ input[type=submit] {
 	background-color: #b0b0b0;
 }
 /******************************************************/
+
+/******************* Ownership ************************/
+.player1Owned {
+	border-color: red;
+}
+
+.player2Owned {
+	border-color: yellow;
+}
+/******************************************************/
+

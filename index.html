@@ -14,19 +14,39 @@
 
 
 <body>
-<!--     *************** First Player ***********************     -->
+<!--     *************** Players ****************************     -->
 <div class="player1"></div>
 <div class="player2"></div>
-
+<!--     ****************************************************     -->
 
 <!--     ************ Left side indicators ******************     -->
 	<div class="playerIndicator">
-		<h3>Player Turn: </h3>
+		<h3>Player Turn: 1</h3>
 	</div>
 	<div class="turn">
 		<input type="submit" value="End Turn">
 	</div>
 <!--     *****************************************************    -->
+
+<!--     ************ Right side indicators *****************     -->
+	<div class="balances">
+		<h3>Balances</h3>
+		<h3 class="playerNames">Player 1 <span>Player 2</span></h3>
+		<div class="playerBalances">
+			<h3 class="player1Balance">500</h3>
+			<h3 class="player2Balance">500</h3>
+		</div>
+	</div>
+
+	<div class="purchasePrompt">
+		<h3>Purhcase this property?</h3>
+		<div class="yesNo">
+			<h3 class="purchaseYes">Yes</h3>
+			<h3 class="purchaseNo">No</h3>
+		</div>
+	</div>
+
+<!--     ****************************************************     -->
 
 <!--     ****************** Active board ********************* 	  -->
 	<div>
@@ -50,7 +70,7 @@
 
 		<div class="rowC">
 			<div class="tile A"></div>
-			<div class="tile C"></div>
+			<div class="tile C player1Owned owned"></div>
 			<div class="tile D"></div>
 			<div class="tile E"></div>
 			<div class="tile F"></div>
@@ -96,7 +116,7 @@
 			<div class="tile D"></div>
 			<div class="tile E"></div>
 			<div class="tile F"></div>
-			<div class="tile G"></div>
+			<div class="tile G player2Owned owned"></div>
 			<div class="tile I"></div>
 		</div>
 
