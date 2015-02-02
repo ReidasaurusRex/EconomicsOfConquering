@@ -12,7 +12,7 @@ function Player(num, styLeft, styTop, coLor) {
 	this.dom.css("background-color", coLor);
 	this.coLor = coLor;
 	this.moveCounter = 0;
-	this.balance = 500;
+	this.balance = 0;
 
 }
 // *****************************************************************
@@ -64,6 +64,8 @@ function Game() {
 	this.currentPlayer = this.player1;
 	this.logicId = setInterval(this.logic.bind(this), 1);
 	$(".purchasePrompt").hide().css("visibility", "visible");
+	$(".notEnoughFunds").hide().css("visibility", "visible");
+	$(".investPrompt").hide().css("visibility", "visible");
 	this.currentTile = $(".rowC .C");
 	console.log(this.currentTile);
 }
@@ -100,6 +102,10 @@ Game.prototype.purchase = function() {
 			this.currentPlayer.balance = (this.currentPlayer.balance - 200);
 			this.currentTile.addClass("player"+this.currentPlayer.num+"Owned");
 		}
+
+		else {
+			$(".notEnoughFunds").fadeIn(500);
+		}
 	}
 	if (!this.currentTile.hasClass("owned")) {
 		if (this.currentPlayer.balance >= 100) {
@@ -107,6 +113,38 @@ Game.prototype.purchase = function() {
 			this.currentTile.addClass("owned");
 			this.currentTile.addClass("player"+this.currentPlayer.num+"Owned");
 			$(".purchasePrompt").fadeOut(500);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+		}
+
+		else {
+			$(".notEnoughFunds").fadeIn(500);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+		}
+	}
+};
+// ******************************************************************
+
+// ******************** Investment Function *************************
+Game.prototype.invest = function(thisDom) {
+	var self = this;
+		// Difference between clicked tile and player left/right value
+		var difLeft = Math.abs(parseInt(thisDom.css("left"), 10) - parseInt(this.currentPlayer.dom.css("left"), 10));
+		// Difference between clicked tile and player top/bottom value
+		var difTop = Math.abs(parseInt(thisDom.css("top"), 10)-parseInt(this.currentPlayer.dom.css("top"), 10));
+		// Max left/right distance allowed
+		var leftPar = (difLeft < 120); 
+		// Max top/bottom difference allowed
+		var topPar = (difTop < 120);
+
+	if (thisDom.hasClass("player"+this.currentPlayer.num+"Owned")) {
+		if(topPar && leftPar) {
+			$(".tooFarToInvest").fadeIn(500);
+			console.log("checking for parameters");
+		// ****************************************************
+		// ****************************************************
+		// ****************************************************    YOU'RE WORKING HERE
+		// ****************************************************
+		// ****************************************************
 		}
 	}
 };
@@ -116,10 +154,16 @@ Game.prototype.purchase = function() {
 Game.prototype.attachListeners = function() {
 	var self = this;
 		
-		// Tile click
-		$(".tile").on("click", function() {
+		// Tile dblclick
+		$(".tile").on("dblclick", function() {
 		var tileDom = $(this);
 		self.currentPlayer.move(tileDom);
+		});
+
+		// Tile invest check click
+		$(".owned").on("click", function() {
+		var tileDom = $(this);
+		self.invest(tileDom);
 		});
 
 		// Turn button click

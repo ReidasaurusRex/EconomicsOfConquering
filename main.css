@@ -115,6 +115,47 @@ input:focus {
 .purchaseNo {
 	margin-left: 40px;
 }
+
+/******************************************************/
+
+/******************* Not Enough ***********************/
+.notEnoughFunds {
+	visibility: hidden;
+	position: absolute;
+	top: 440px;
+	left: 1040px;
+}
+
+.notEnoughFunds h3 {
+	font-size: 1.4em;
+}
+/******************************************************/
+
+/*************** Invest Prompts ***********************/
+.investPrompt {
+	position: absolute;
+	top: 400px;
+	left: 1021px;
+	/*visibility: hidden;*/
+}
+
+.investPrompt h3 {
+	font-size: 1.5em;
+}
+
+.moveOrInvest h3 {
+	display: inline-block;
+}
+
+.moveOrInvest h3:last-child {
+	margin-left: 40px;
+}
+
+.tooFarToInvest {
+	position: absolute;
+	margin-left: 50px;
+
+}
 /******************************************************/
 /******************************************************/
 
