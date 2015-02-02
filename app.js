@@ -12,7 +12,7 @@ function Player(num, styLeft, styTop, coLor) {
 	this.dom.css("background-color", coLor);
 	this.coLor = coLor;
 	this.moveCounter = 0;
-	this.balance = 0;
+	this.balance = 500;
 
 }
 // *****************************************************************
@@ -28,6 +28,9 @@ Player.prototype.move = function(thisDom) {
 		var leftPar = (difLeft < 120); 
 		// Max top/bottom difference allowed
 		var topPar = (difTop < 120);
+		// Player 1 same top check
+		var player1DifTop = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player1.dom.css("left"), 10) - 30));
+		// Player
 
 		// Moving player depending on turn
 		if(game.turnCounter === this.num) { 
@@ -36,7 +39,7 @@ Player.prototype.move = function(thisDom) {
 				// Ensuring player move distance equals one square
 				if ((topPar && leftPar) && ((difTop != 30) || (difLeft != 30))) {
 					// Ensuring players cannot move on top of one another
-					if ((thisDom.css("left") != game.player1.dom.css("left")) && (thisDom.css("top") != game.player1.dom.css("left"))){
+					if ((parseInt(thisDom.css("left"), 10) != (parseInt(game.player1.dom.css("left"), 10)) - 30) || (parseInt(thisDom.css("top"), 10) != parseInt(game.player1.dom.css("left"), 10) - 30)){
 						game.currentTile = thisDom;
 						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 30))}, 500);
 						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
@@ -166,10 +169,11 @@ Game.prototype.attachListeners = function() {
 		self.invest(tileDom);
 		});
 
-		// Turn button click
-		$(".turn").on("click", function() {
-			game.turnChange();
-			console.log(self.currentPlayer.balance);
+		// Enter key turn change
+		window.addEventListener("keyup", function(event) {
+			if (event.keyCode === 13) {
+				game.turnChange();
+			}
 		});
 
 		// Purhcase click
