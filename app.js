@@ -70,7 +70,8 @@ function Game() {
 	$(".notEnoughFunds").hide().css("visibility", "visible");
 	$(".investPrompt").hide().css("visibility", "visible");
 	this.currentTile = $(".rowC .C");
-	console.log(this.currentTile);
+	$("#gameContent").hide().css("visibility", "visible");
+
 }
 // ******************************************************************
 
@@ -157,6 +158,12 @@ Game.prototype.invest = function(thisDom) {
 Game.prototype.attachListeners = function() {
 	var self = this;
 		
+		// New Game
+		$(".newGame").on("click", function(){
+			$("#landingPage").fadeOut(600);
+			setTimeout(function(){$("#gameContent").fadeIn(1500);}, 1000);
+		});
+
 		// Tile dblclick
 		$(".tile").on("dblclick", function() {
 		var tileDom = $(this);

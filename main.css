@@ -1,7 +1,67 @@
-/********************* General ************************/
-h3 {
-	color: white;
+/***************** Landing Page ***********************/
+#landingPage {
+	position: absolute;
+	width: 60%;
+	height: 60%;
+	margin-left: 20%;
+	margin-top: 12%;
+}
+
+#landingPage h1 {
+	margin-top: 40px;
+
+}
+
+#landingPage h1 {
 	cursor: default;
+}
+
+#landingPage h3 {
+	cursor: default;
+}
+
+#landingPage h2 {
+	cursor: pointer;
+}
+
+#landingPage div {
+	margin-top: 60px;
+	margin-left: 180px;
+	width: 300px;
+}
+
+#landingPage h3 {
+	color: black;
+}
+
+#landingPage h2 {
+	display: inline-block;
+}
+
+#landingPage .viewReadMe {
+	margin-left: 140px;
+	margin-top: 35px;
+}
+
+#landingPage .newGame {
+	margin-left: 60px;
+}
+
+#landingPage h2:last-child {
+	margin-left: 60px;
+}
+/******************************************************/
+
+
+
+/******************* Game General *********************/
+h3 {
+	color: gray;
+	cursor: default;
+}
+
+#gameContent {
+	visibility: hidden;
 }
 /******************************************************/
 
@@ -25,13 +85,17 @@ h3 {
 /******************************************************/
 
 /*************** Left Column Styling ******************/
-.leftColumn{
+.leftColumn {
 	position: absolute;
 	top: 260px;
 	left: 20px;
 	height: 500px;
 	width: 240px;
 	background-color: black;
+}
+
+.leftColumn h3 {
+	color: white;
 }
 
 .playerIndicator {
