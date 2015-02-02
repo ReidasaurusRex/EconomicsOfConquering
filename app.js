@@ -90,9 +90,11 @@ function Game() {
 	this.logicId = setInterval(this.logic.bind(this), 1);
 	$(".purchasePrompt").hide().css("visibility", "visible");
 	$(".notEnoughFunds").hide().css("visibility", "visible");
-	$(".investPrompt").hide().css("visibility", "visible");
+	$(".tooFarToInvest").hide().css("visibility", "visible");
+	$(".moveOrInvest").hide().css("visibility", "visible");
 	this.currentTile = $(".rowC .C");
 	$("#gameContent").hide().css("visibility", "visible");
+	$(".fullyInvested").hide().css("visibility", "visible");
 
 }
 // ******************************************************************
@@ -152,28 +154,74 @@ Game.prototype.purchase = function() {
 };
 // ******************************************************************
 
-// ******************** Investment Function *************************
-Game.prototype.invest = function(thisDom) {
+// ******************** Investment Check *************************
+Game.prototype.investPromptFromClick = function(thisDom) {
 	var self = this;
+	this.currentTile = thisDom;
 		// Difference between clicked tile and player left/right value
 		var difLeft = Math.abs(parseInt(thisDom.css("left"), 10) - parseInt(this.currentPlayer.dom.css("left"), 10));
 		// Difference between clicked tile and player top/bottom value
 		var difTop = Math.abs(parseInt(thisDom.css("top"), 10)-parseInt(this.currentPlayer.dom.css("top"), 10));
 		// Max left/right distance allowed
 		var leftPar = (difLeft < 120); 
+		// Farther than max distance left/right
+		var leftFarPar = (difLeft >= 120);
+		// Farther than max distance top/bottom
+		var topFarPar = (difTop >= 120);
 		// Max top/bottom difference allowed
 		var topPar = (difTop < 120);
 
 	if (thisDom.hasClass("player"+this.currentPlayer.num+"Owned")) {
-		if(topPar && leftPar) {
-			$(".tooFarToInvest").fadeIn(500);
-			console.log("checking for parameters");
-		// ****************************************************
-		// ****************************************************
-		// ****************************************************    YOU'RE WORKING HERE
-		// ****************************************************
-		// ****************************************************
+		
+		if (topPar && leftPar) {
+			if (this.currentPlayer.moveCounter === 0) {
+				console.log("checking for parameters");
+				$(".moveOrInvest").fadeIn(500);
+			}
+			if (this.currentPlayer.moveCounter > 0) {
+				console.log("Already moved");
+				$(".tooFarToInvest").fadeIn(500);
+			}
 		}
+		if (topFarPar || leftFarPar) {
+			$(".tooFarToInvest").fadeIn(500);
+			console.log("paramCheck");
+		}
+	}
+};
+// ******************************************************************
+
+// ******************* Invest Function ******************************
+Game.prototype.invest = function(tileDom) {
+	var self = this;
+	
+	if (!this.currentTile.hasClass("invested1")) {
+		this.currentTile.append("<div class = \"i1 player"+this.currentPlayer.num+"Owned\"></div>");
+		this.currentTile.addClass("invested1");
+		tileDom.parent().fadeOut(500);
+	}
+
+	else if (!this.currentTile.hasClass("invested2")) {
+		this.currentTile.append("<div class = \"i2 player"+this.currentPlayer.num+"Owned\"></div>");
+		this.currentTile.addClass("invested2");
+		tileDom.parent().fadeOut(500);
+	}
+
+	else if (!this.currentTile.hasClass("invested3")) {
+		this.currentTile.append("<div class = \"i3 player"+this.currentPlayer.num+"Owned\"></div>");
+		this.currentTile.addClass("invested3");
+		tileDom.parent().fadeOut(500);
+	}
+
+	else if (!this.currentTile.hasClass("invested4")) {
+		this.currentTile.append("<div class = \"i4 player"+this.currentPlayer.num+"Owned\"></div>");
+		this.currentTile.addClass("invested4");
+		tileDom.parent().fadeOut(500);
+	}
+
+	else if (this.currentTile.hasClass("invested4")) {
+		$(".fullyInvested").fadeIn(500);
+		setTimeout(function() {$(".fullyInvested").fadeOut(500);}, 1500);
 	}
 };
 // ******************************************************************
@@ -195,9 +243,21 @@ Game.prototype.attachListeners = function() {
 		});
 
 		// Tile invest check click
-		$(".owned").on("click", function() {
+		$("div").on("click", ".owned", function(event) {
 		var tileDom = $(this);
-		self.invest(tileDom);
+		self.investPromptFromClick(tileDom);
+		});
+
+		// Invest
+		$(".investFunction").on("click", function(event) {
+			var tileDom = $(this);
+			self.invest(tileDom);
+
+		});
+
+		// Hide invest prompt
+		$(".doNothing").on("click", function(event) {
+			$(this).parent().fadeOut(500);
 		});
 
 		// Enter key turn change

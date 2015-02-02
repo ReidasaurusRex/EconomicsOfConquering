@@ -205,29 +205,59 @@ input:focus {
 /******************************************************/
 
 /*************** Invest Prompts ***********************/
-.investPrompt {
+.fullyInvested {
 	position: absolute;
-	top: 400px;
-	left: 1021px;
-	/*visibility: hidden;*/
+	top: 350px;
+	left: 1055px;
+	visibility: hidden;
 }
 
-.investPrompt h3 {
+.fullyInvested h3 {
+	color: gray;
 	font-size: 1.5em;
+}
+
+.moveOrInvest {
+	position: absolute;
+	top: 390px;
+	left: 1045px;
+	visibility: hidden;
 }
 
 .moveOrInvest h3 {
 	display: inline-block;
+	color: gray;
+	font-size: 1.6em;
+	cursor: pointer;
 }
 
-.moveOrInvest h3:last-child {
+.moveOrInvest .investFunction  {
 	margin-left: 40px;
+}
+
+.moveOrInvest .doNothing {
+	margin-left: 25px;
 }
 
 .tooFarToInvest {
 	position: absolute;
-	margin-left: 50px;
+	top: 390px;
+	left: 1052px;
+	visibility: hidden;
+}
 
+.tooFarToInvest h3 {
+	font-size: 1.6em;
+	color: gray;
+	cursor: pointer;
+}
+
+.tooFarToInvest .investFunction {
+	margin-left: 40px;
+}
+
+.tooFarToInvest .doNothing {
+	margin-left: 11px;
 }
 /******************************************************/
 /******************************************************/
@@ -247,8 +277,8 @@ input:focus {
 	position: absolute;
 	width: 70px;
 	height: 70px;
-	border: solid 5px blue;
-	background-color: blue;
+	border: solid 5px #2095ea;
+	background-color: #2095ea;
 	z-index: -6;
 }
 /******************************************************/
@@ -330,6 +360,45 @@ input:focus {
 }
 /******************************************************/
 
+/************** Investment Divs ***********************/
+div .i1 {
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	top: 0px;
+	left: 0px;
+	z-index: 5;
+
+}
+
+div .i2 {
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	top: 0;
+	left: 78%;
+	z-index: 5;
+}
+
+div .i3 {
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	top: 78%;
+	left: 0;
+	z-index: 5;
+}
+
+div .i4 {
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	top: 78%;
+	left: 78%;
+	z-index: 5;
+}
+/******************************************************/
+
 /******************* Value Settings *******************/
 .v1 {
 	background-color: white;
@@ -338,6 +407,18 @@ input:focus {
 .v2 {
 	background-color: #b0b0b0;
 }
+
+.v3 {
+	background-color: #888888;
+}
+
+.v4 {
+	background-color: #626262;
+}
+
+.v5 {
+	background-color: #3a3a3a;
+}
 /******************************************************/
 
 /******************* Ownership ************************/
@@ -345,8 +426,39 @@ input:focus {
 	border-color: red;
 }
 
+.i1.player1Owned {
+	background-color: red;
+}
+
+.i2.player1Owned {
+	background-color: red;
+}
+
+.i3.player1Owned {
+	background-color: red;
+}
+.i4.player1Owned {
+	background-color: red;
+}
+
 .player2Owned {
 	border-color: yellow;
+}
+
+.i1.player2Owned {
+	background-color: yellow;
+}
+
+.i2.player2Owned {
+	background-color: yellow;
+}
+
+.i3.player2Owned {
+	background-color: yellow;
+}
+
+.i4.player2Owned {
+	background-color: yellow;
 }
 /******************************************************/
 
