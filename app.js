@@ -29,8 +29,13 @@ Player.prototype.move = function(thisDom) {
 		// Max top/bottom difference allowed
 		var topPar = (difTop < 120);
 		// Player 1 same top check
-		var player1DifTop = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player1.dom.css("left"), 10) - 30));
-		// Player
+		var player1DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player1.dom.css("top"), 10) - 30));
+		// Player 1 same left check
+		var player1DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player1.dom.css("left"), 10) - 30));
+		// Player 2 same top check
+		var player2DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player2.dom.css("top"), 10) - 30));
+		// Player 2 same left check
+		var player2DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player2.dom.css("left"), 10) - 30));
 
 		// Moving player depending on turn
 		if(game.turnCounter === this.num) { 
@@ -38,18 +43,35 @@ Player.prototype.move = function(thisDom) {
 			if (this.moveCounter === 0) {
 				// Ensuring player move distance equals one square
 				if ((topPar && leftPar) && ((difTop != 30) || (difLeft != 30))) {
-					// Ensuring players cannot move on top of one another
-					if ((parseInt(thisDom.css("left"), 10) != (parseInt(game.player1.dom.css("left"), 10)) - 30) || (parseInt(thisDom.css("top"), 10) != parseInt(game.player1.dom.css("left"), 10) - 30)){
-						game.currentTile = thisDom;
-						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 30))}, 500);
-						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
-						// thisDom.addClass("player"+this.num+"Owned");
-						console.log(game.currentTile);
-						// See if state correlating to move counter
-						this.moveCounter++;
-						// Ensuring purchase prompt doesn't show if player already owns property
-						if (!thisDom.hasClass("player"+this.num+"Owned")) {
-							$(".purchasePrompt").fadeIn(500);
+					// Ensuring player2 cannot move on top of player1
+					if (game.currentPlayer === game.player2) {
+						if ((player1DifLeft !== 0) || (player1DifTop !== 0)) {
+							game.currentTile = thisDom;
+							this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 30))}, 500);
+							this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
+							// thisDom.addClass("player"+this.num+"Owned");
+							console.log(game.currentTile);
+							// See if state correlating to move counter
+							this.moveCounter++;
+							// Ensuring purchase prompt doesn't show if player already owns property
+							if (!thisDom.hasClass("player"+this.num+"Owned")) {
+								$(".purchasePrompt").fadeIn(500);
+							}
+						}
+					}
+					if (game.currentPlayer === game.player1) {
+						if ((player2DifLeft !== 0) || (player2DifTop !== 0)) {
+							game.currentTile = thisDom;
+							this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 30))}, 500);
+							this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
+							// thisDom.addClass("player"+this.num+"Owned");
+							console.log(game.currentTile);
+							// See if state correlating to move counter
+							this.moveCounter++;
+							// Ensuring purchase prompt doesn't show if player already owns property
+							if (!thisDom.hasClass("player"+this.num+"Owned")) {
+								$(".purchasePrompt").fadeIn(500);
+							}
 						}
 					}
 				}
@@ -92,6 +114,8 @@ Game.prototype.turnChange = function() {
 	else if (this.turnCounter === 2) {
 		this.turnCounter--;
 	}
+
+	$(".purchasePrompt").fadeOut(500);
 	
 	$(".playerIndicator h3").text("Player Turn: " + this.turnCounter);
 };
