@@ -84,6 +84,17 @@ h3 {
 }
 /******************************************************/
 
+/******************** Soldiers ************************/
+.soldier {
+	position: absolute;
+	height: 16px;
+	width: 16px;
+	z-index: 1;
+	border-radius: 8px;
+	text-align: center;
+}
+/******************************************************/
+
 /*************** Left Column Styling ******************/
 .leftColumn {
 	position: absolute;

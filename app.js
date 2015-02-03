@@ -79,16 +79,17 @@ Player.prototype.move = function(thisDom) {
 // ******************************************************************
 
 // ******************* Soldier Constructor **************************
-function Soldier(styLeft, styTop) {
-	this.styLeft = styLeft;
-	this.styTop = styTop;
-	// this.dom = $(".player"+this.num);
-	this.dom.css("left", styLeft);
-	this.dom.css("top", styTop);
-	this.dom.css("background-color", coLor);
-	this.moveCounter = 0;
-	this.armySize = 1;
-}
+// function Soldier(styLeft, styTop, coLor) {
+// 	this.styLeft = styLeft;
+// 	this.styTop = styTop;
+// 	// this.dom = $(".player"+this.num);
+// 	this.dom.css("left", (styLeft + 45 + "px"));
+// 	this.dom.css("top", (styTop + 30 + "px"));
+// 	this.coLor = coLor;
+// 	this.dom.css("background-color", coLor);
+// 	this.moveCounter = 0;
+// 	this.armySize = 1;
+// }
 // ******************************************************************
 
 // ******************** Game Constructor ****************************
@@ -98,7 +99,7 @@ function Game() {
 	this.player1 = new Player(1, "465px", "340px", "red");
 	this.player2 = new Player(2, "785px", "660px", "yellow");
 	this.currentPlayer = this.player1;
-	this.logicId = setInterval(this.logic.bind(this), 1);
+	this.logicId = setInterval(this.logic.bind(this), 10);
 	$(".purchasePrompt").hide().css("visibility", "visible");
 	$(".notEnoughFunds").hide().css("visibility", "visible");
 	$(".tooFarToInvest").hide().css("visibility", "visible");
@@ -282,6 +283,35 @@ Game.prototype.invest = function(tileDom) {
 };
 // ******************************************************************
 
+// ****************** Soldier Purchase Function *********************
+Game.prototype.purchaseSoldier = function(tileDom) {
+	var self = this;
+	var styTop = (parseInt(this.currentTile.css("top"), 10) + "px");
+	var styLeft = (parseInt(this.currentTile.css("left"), 10) + 32 + "px");
+	if (!this.currentTile.hasClass("occupied")) {
+		$("#gameContent").prepend("<div class = \"soldier player" + this.currentPlayer.num + "Owned army" + this.currentPlayer.armyCounter + "\"></div>");
+		console.log("Holla", $("#gameContent"));
+		this.currentTile.addClass("occupied");
+		$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("top", styTop);
+		$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("left", styLeft);
+		$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("background-color", this.currentPlayer.coLor);
+		$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).text(1);
+		this.currentPlayer.armyCounter ++;
+	}
+	else if (this.currentTile.hasClass("occupied")) {
+		var selector = ".player" + this.currentPlayer.num + "Owned.soldier";
+		console.log("Aloholler", selector);
+		console.log("-->", $(selector));
+		$(selector).each(function() {
+			if (($(this).css("top") === self.currentTile.css("top")) && 
+				($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 32 + "px"))) {
+				$(this).text(parseInt($(this).text(), 10) + 1);
+			} 
+		});
+	}
+};
+// ******************************************************************
+
 // ******************** Listener Attach *****************************
 Game.prototype.attachListeners = function() {
 	var self = this;
@@ -309,6 +339,12 @@ Game.prototype.attachListeners = function() {
 			var tileDom = $(this);
 			self.invest(tileDom);
 
+		});
+
+		// Purchase Soldier
+		$(".soldierPurchase").on("click", function(event) {
+			var tileDom = $(this);
+			self.purchaseSoldier(tileDom);
 		});
 
 		// Hide invest prompt
