@@ -105,7 +105,7 @@ Game.prototype.turnChange = function() {
 	this.player1.moveCounter = 0;
 	this.player2.moveCounter = 0;
 
-	$(".player"+this.currentPlayer.num+"Owned").each(function(){
+	$(".player"+this.currentPlayer.num+"Owned.tile").each(function(){
 		self.currentPlayer.balance += 25;
 		console.log(self.currentPlayer.balance);
 	});
@@ -196,27 +196,55 @@ Game.prototype.invest = function(tileDom) {
 	var self = this;
 	
 	if (!this.currentTile.hasClass("invested1")) {
-		this.currentTile.append("<div class = \"i1 player"+this.currentPlayer.num+"Owned\"></div>");
-		this.currentTile.addClass("invested1");
-		tileDom.parent().fadeOut(500);
+			if (this.currentPlayer.balance >= 75) {
+				this.currentTile.append("<div class = \"invested i1 player"+this.currentPlayer.num+"Owned\"></div>");
+				this.currentTile.addClass("invested1");
+				this.currentPlayer.balance = (this.currentPlayer.balance - 75);
+				tileDom.parent().fadeOut(500);
+			}
+			else {
+				$(".notEnoughFunds").fadeIn(500);
+				setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+			}
 	}
 
 	else if (!this.currentTile.hasClass("invested2")) {
-		this.currentTile.append("<div class = \"i2 player"+this.currentPlayer.num+"Owned\"></div>");
-		this.currentTile.addClass("invested2");
-		tileDom.parent().fadeOut(500);
+		if (this.currentPlayer.balance >= 75) {
+			this.currentTile.append("<div class = \"invested i2 player"+this.currentPlayer.num+"Owned\"></div>");
+			this.currentTile.addClass("invested2");
+			this.currentPlayer.balance = (this.currentPlayer.balance - 75);
+			tileDom.parent().fadeOut(500);
+		}
+		else {
+			$(".notEnoughFunds").fadeIn(500);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+		}
 	}
 
 	else if (!this.currentTile.hasClass("invested3")) {
-		this.currentTile.append("<div class = \"i3 player"+this.currentPlayer.num+"Owned\"></div>");
-		this.currentTile.addClass("invested3");
-		tileDom.parent().fadeOut(500);
+		if (this.currentPlayer.balance >= 75) {	
+			this.currentTile.append("<div class = \"invested i3 player"+this.currentPlayer.num+"Owned\"></div>");
+			this.currentTile.addClass("invested3");
+			this.currentPlayer.balance = (this.currentPlayer.balance - 75);
+			tileDom.parent().fadeOut(500);
+		}
+		else {
+			$(".notEnoughFunds").fadeIn(500);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);	
+		}
 	}
 
 	else if (!this.currentTile.hasClass("invested4")) {
-		this.currentTile.append("<div class = \"i4 player"+this.currentPlayer.num+"Owned\"></div>");
-		this.currentTile.addClass("invested4");
-		tileDom.parent().fadeOut(500);
+		if (this.currentPlayer.balance >= 75) {	
+			this.currentTile.append("<div class = \"invested i4 player"+this.currentPlayer.num+"Owned\"></div>");
+			this.currentTile.addClass("invested4");
+			this.currentPlayer.balance = (this.currentPlayer.balance - 75);
+			tileDom.parent().fadeOut(500);
+		}
+		else {
+			$(".notEnoughFunds").fadeIn(500);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+		}
 	}
 
 	else if (this.currentTile.hasClass("invested4")) {

@@ -195,7 +195,7 @@ input:focus {
 .notEnoughFunds {
 	visibility: hidden;
 	position: absolute;
-	top: 440px;
+	top: 480px;
 	left: 1040px;
 }
 
