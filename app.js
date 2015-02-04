@@ -371,6 +371,14 @@ Game.prototype.armyMove = function(thisDom) {
 					// Moving player
 					this.currentArmy.animate({"left": ((parseInt((thisDom.css("left")), 10) + 45))}, 500);
 					this.currentArmy.animate({"top": ((parseInt((thisDom.css("top")), 10) + 32))}, 500);
+					console.log(self.currentTile);
+					console.log(self.oppositePlayer);
+					if (this.currentTile.hasClass("player"+this.currentPlayer.num+"Owned")) {
+						console.log("Owned by player " + this.currentPlayer.num);
+					}
+					if(this.currentTile.hasClass("player"+this.oppositePlayer.num+"Owned")) {
+						console.log("Owned by player " + this.oppositePlayer.num);
+					}
 					// Adding move exhaustion
 					this.currentArmy.addClass("moved");
 					// Combinging same player armies if present
@@ -385,16 +393,29 @@ Game.prototype.armyMove = function(thisDom) {
 					$(".soldier.player"+this.oppositePlayer.num+"Owned").each(function() {
 						var thisNumber = parseInt($(this).text(), 10);
 						var playerNumber = parseInt(self.currentArmy.text(), 10);
+						var tempArr = [];
 						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
 							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
 							console.log("opposite player present");
+							tempArr.push($(this));
 							// Current player wins
 							if (playerNumber > thisNumber) {
 								self.currentArmy.text(playerNumber - thisNumber);
 								$(this).remove();
+								// Conquering Functionaity
+								// var ownershipSelector = "player"+self.oppositePlayer.num+"Owned";
+								console.log(self.oppositePlayer.num);
+								if (self.currentTile.hasClass("player"+self.oppositePlayer.num+"Owned")) {
+									console.log("fish");
+									$(self.currentTile).find(".invested").each(function() {
+										($(this)).remove();
+									});
+									self.currentTile.removeClass("player"+self.oppositePlayer.num+"Owned");
+									self.currentTile.addClass("player"+self.currentPlayer.num+"Owned");
+								}
 							}
 							// Opposite player wins
-							else if (thisNumber > playerNumber) {
+							else if (playerNumber < thisNumber) {
 								$(this).text(thisNumber - playerNumber);
 								self.currentArmy.remove();
 							}
@@ -402,6 +423,16 @@ Game.prototype.armyMove = function(thisDom) {
 							else if (thisNumber === playerNumber) {
 								self.currentArmy.remove();
 								$(this).remove();
+							}
+							else if (tempArr.length === 0) {
+								console.log(self.oppositePlayer.num);
+								if (self.currentTile.hasClass("player"+self.oppositePlayer.num+"Owned")) {
+									$(self.currentTile).find(".invested").each(function() {
+										($this).remove();
+									});
+								self.currentTile.removeClass("player"+self.oppositePlayer.num+"Owned");
+								self.currentTile.addClass("player"+self.currentPlayer.num+"Owned");
+								}
 							}
 						}
 					});
@@ -421,6 +452,7 @@ Game.prototype.attachListeners = function() {
 		$(".newGame").on("click", function(){
 			$("#landingPage").fadeOut(600);
 			setTimeout(function(){$("#gameContent").fadeIn(1500);}, 1000);
+			console.log($(".tile.player"+self.oppositePlayer.num+"Owned").length);
 		});
 
 		// Tile dblclick
@@ -492,27 +524,32 @@ Game.prototype.attachListeners = function() {
 Game.prototype.logic = function() {
 	var self = this;
 
+	// Defining players based on turn
 	if ((this.turnCounter === 1) || (this.turnCounter === 3)) {
 		this.currentPlayer = this.player1;
 		this.oppositePlayer = this.player2;
 		$(".playerIndicator h3").text("Player Turn: 1");
 	}
-
 	if ((this.turnCounter === 2) || (this.turnCounter === 4)) {
 		this.currentPlayer = this.player2;
 		this.oppositePlayer = this.player1;
 		$(".playerIndicator h3").text("Player Turn: 2");
 	}
 
+	// Showing Economy or Military indicator
 	if ((this.turnCounter === 1) || (this.turnCounter === 2)) {
 		$(".phaseIndicator").text("Economy");
 	}
-
 	if ((this.turnCounter === 3) || (this.turnCounter === 4)) {
 		$(".phaseIndicator").text("Military");
 		this.variable = true;
 	}
 
+	// Victory check
+	if ($(".tile.player"+this.currentPlayer.num+"Owned").length === 4) {
+		alert("Game, blouses");
+		clearInterval(this.logicId);
+	}
 	$(".playerBalances h3:first-child").text(this.player1.balance);
 	$(".playerBalances h3:last-child").text(this.player2.balance);
 };
