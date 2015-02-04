@@ -38,58 +38,44 @@ Player.prototype.move = function(thisDom) {
 	// Player 2 same left check
 	var player2DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player2.dom.css("left"), 10) - 18));
 
-	// Ensuring player only moves once
-	if (this.moveCounter === 0) {
-		// Ensuring player move distance equals one square
-		if ((topPar && leftPar) && ((difTop != 30) || (difLeft != 18))) {
-			// Ensuring player2 cannot move on top of player1
-			if (game.currentPlayer === game.player2) {
-				if ((player1DifLeft !== 0) || (player1DifTop !== 0)) {
-					game.currentTile = thisDom;
-					this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 18))}, 500);
-					this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 30))}, 500);
-					// thisDom.addClass("player"+this.num+"Owned");
-					console.log(game.currentTile);
-					// See if state correlating to move counter
-					this.moveCounter++;
-					// Ensuring purchase prompt doesn't show if player already owns property
-					if (!thisDom.hasClass("player"+this.num+"Owned")) {
-						$(".purchasePrompt").fadeIn(500);
+	if (game.turnCounter === 1 || game.turnCounter === 2) {
+		// Ensuring player only moves once
+		if (this.moveCounter === 0) {
+			// Ensuring player move distance equals one square
+			if ((topPar && leftPar) && ((difTop != 30) || (difLeft != 18))) {
+				// Ensuring player2 cannot move on top of player1
+				if (game.currentPlayer === game.player2) {
+					if ((player1DifLeft !== 0) || (player1DifTop !== 0)) {
+						game.currentTile = thisDom;
+						this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 18))}, 500);
+						this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 30))}, 500);
+						// thisDom.addClass("player"+this.num+"Owned");
+						// See if state correlating to move counter
+						this.moveCounter++;
+						// Ensuring purchase prompt doesn't show if player already owns property
+						if (!thisDom.hasClass("player"+this.num+"Owned")) {
+							$(".purchasePrompt").fadeIn(500);
+						}
 					}
 				}
-			}
-			if (game.currentPlayer === game.player1) {
-				if ((player2DifLeft !== 0) || (player2DifTop !== 0)) {
-					game.currentTile = thisDom;
-					this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 18))}, 500);
-					this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
-					// thisDom.addClass("player"+this.num+"Owned");
-					console.log(game.currentTile);
-					// See if state correlating to move counter
-					this.moveCounter++;
-					// Ensuring purchase prompt doesn't show if player already owns property
-					if (!thisDom.hasClass("player"+this.num+"Owned")) {
-						$(".purchasePrompt").fadeIn(500);
+				if (game.currentPlayer === game.player1) {
+					if ((player2DifLeft !== 0) || (player2DifTop !== 0)) {
+						game.currentTile = thisDom;
+						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 18))}, 500);
+						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
+						// thisDom.addClass("player"+this.num+"Owned");
+						// See if state correlating to move counter
+						this.moveCounter++;
+						// Ensuring purchase prompt doesn't show if player already owns property
+						if (!thisDom.hasClass("player"+this.num+"Owned")) {
+							$(".purchasePrompt").fadeIn(500);
+						}
 					}
 				}
 			}
 		}
 	}
 };
-// ******************************************************************
-
-// ******************* Soldier Constructor **************************
-// function Soldier(styLeft, styTop, coLor) {
-// 	this.styLeft = styLeft;
-// 	this.styTop = styTop;
-// 	// this.dom = $(".player"+this.num);
-// 	this.dom.css("left", (styLeft + 45 + "px"));
-// 	this.dom.css("top", (styTop + 30 + "px"));
-// 	this.coLor = coLor;
-// 	this.dom.css("background-color", coLor);
-// 	this.moveCounter = 0;
-// 	this.armySize = 1;
-// }
 // ******************************************************************
 
 // ******************** Game Constructor ****************************
@@ -107,7 +93,6 @@ function Game() {
 	this.currentTile = $(".rowC .C");
 	$("#gameContent").hide().css("visibility", "visible");
 	$(".fullyInvested").hide().css("visibility", "visible");
-
 }
 // ******************************************************************
 
@@ -122,7 +107,6 @@ Game.prototype.turnChange = function() {
 	// Income from properties
 	$(".player"+this.currentPlayer.num+"Owned.tile").each(function(){
 		self.currentPlayer.balance += 25;
-		console.log(self.currentPlayer.balance);
 	});
 
 	// Income from investments
@@ -136,13 +120,19 @@ Game.prototype.turnChange = function() {
 	else if (this.turnCounter === 4) {
 		this.turnCounter = 1;
 	}
+	console.log(this.currentPlayer.num);
 
 	// Ensuring no right side prompts are left over
 	$(".purchasePrompt").fadeOut(500);
 	$(".moveOrInvest").fadeOut(500);
 	$(".tooFarToInvest").fadeOut(500);
+	// Ensuring no soldiers are left over selected
+	$(".soldier").each(function(){
+		$(this).removeClass("currentArmy");
+		$(this).removeClass("moved");
+	});
+	this.currentArmy = "";
 
-	console.log(this.currentPlayer);
 };
 // ******************************************************************
 
@@ -201,20 +191,22 @@ Game.prototype.investPromptFromClick = function(thisDom) {
 		// Max top/bottom difference allowed
 		var topPar = (difTop < 120);
 
-	if (thisDom.hasClass("player"+this.currentPlayer.num+"Owned")) {
-		if ((difTop === 30) && (difLeft === 18)) {
-			$(".tooFarToInvest").fadeIn(500);
-		}
-		else if (topPar && leftPar) {
-			if (this.currentPlayer.moveCounter === 0) {
-				$(".moveOrInvest").fadeIn(500);
-			}
-			if (this.currentPlayer.moveCounter > 0) {
+	if (this.turnCounter === 1 || this.turnCounter === 2) {
+		if (thisDom.hasClass("player"+this.currentPlayer.num+"Owned")) {
+			if ((difTop === 30) && (difLeft === 18)) {
 				$(".tooFarToInvest").fadeIn(500);
 			}
-		}
-		else if (topFarPar || leftFarPar) {
-			$(".tooFarToInvest").fadeIn(500);
+			else if (topPar && leftPar) {
+				if (this.currentPlayer.moveCounter === 0) {
+					$(".moveOrInvest").fadeIn(500);
+				}
+				if (this.currentPlayer.moveCounter > 0) {
+					$(".tooFarToInvest").fadeIn(500);
+				}
+			}
+			else if (topFarPar || leftFarPar) {
+				$(".tooFarToInvest").fadeIn(500);
+			}
 		}
 	}
 };
@@ -290,7 +282,6 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 	var styLeft = (parseInt(this.currentTile.css("left"), 10) + 45 + "px");
 	if (!this.currentTile.hasClass("occupied")) {
 		$("#gameContent").prepend("<div class = \"soldier player" + this.currentPlayer.num + "Owned army" + this.currentPlayer.armyCounter + "\"></div>");
-		console.log("Holla", $("#gameContent"));
 		this.currentTile.addClass("occupied");
 		$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("top", styTop);
 		$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("left", styLeft);
@@ -300,8 +291,6 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 	}
 	else if (this.currentTile.hasClass("occupied")) {
 		var selector = ".player" + this.currentPlayer.num + "Owned.soldier";
-		console.log("Aloholler", selector);
-		console.log("-->", $(selector));
 		$(selector).each(function() {
 			if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
 				($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
@@ -309,6 +298,82 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 			} 
 		});
 	}
+};
+// ******************************************************************
+
+// ****************** Army Select Function **************************
+Game.prototype.armySelect = function(armyDom) {
+	if (this.turnCounter === 3 || this.turnCounter === 4) {
+		$(".soldier").each(function(){
+			$(this).removeClass("currentArmy");
+		});
+		if (armyDom.hasClass("player"+this.currentPlayer.num+"Owned")) {
+			armyDom.addClass("currentArmy");
+			this.currentArmy = armyDom;
+		}
+	}
+};
+// ******************************************************************
+
+// ******************* Army Move Function ***************************
+Game.prototype.armyMove = function(thisDom) {
+	game.currentTile = thisDom;
+	var self = this;
+	// Difference between clicked tile and player left/right value
+	var difLeft = Math.abs(parseInt(thisDom.css("left"), 10) - parseInt(this.currentArmy.css("left"), 10));
+	// Difference between clicked tile and player top/bottom value
+	var difTop = Math.abs(parseInt(thisDom.css("top"), 10)-parseInt(this.currentArmy.css("top"), 10));
+	// Max left/right distance allowed
+	var leftPar = (difLeft < 120); 
+	// Max top/bottom difference allowed
+	var topPar = (difTop < 120);
+	// // Player 1 same top check
+	// var player1DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player1.dom.css("top"), 10) - 30));
+	// // Player 1 same left check
+	// var player1DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player1.dom.css("left"), 10) - 18));
+	// // Player 2 same top check
+	// var player2DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player2.dom.css("top"), 10) - 30));
+	// // Player 2 same left check
+	// var player2DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player2.dom.css("left"), 10) - 18));
+
+	if (game.turnCounter === 3 || game.turnCounter === 4) {
+		// Ensuring player only moves once
+		if (!this.currentArmy.hasClass("moved")) {
+			// Ensuring player move distance equals one square
+			if ((topPar && leftPar) && ((difTop != 30) || (difLeft != 45))) {
+				// Ensuring player2 cannot move on top of player1
+				// if (game.currentPlayer === game.player2) {
+					// if ((player1DifLeft !== 0) || (player1DifTop !== 0)) {
+						this.currentArmy.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 45))}, 500);
+						this.currentArmy.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 30))}, 500);
+						// thisDom.addClass("player"+this.num+"Owned");
+						// See if state correlating to move counter
+						this.currentArmy.addClass("moved");
+						// Ensuring purchase prompt doesn't show if player already owns property
+						// if (!thisDom.hasClass("player"+this.num+"Owned")) {
+						// 	$(".purchasePrompt").fadeIn(500);
+						// }
+					// }
+				// }
+				// if (game.currentPlayer === game.player1) {
+				// 	if ((player2DifLeft !== 0) || (player2DifTop !== 0)) {
+				// 		game.currentTile = thisDom;
+				// 		this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 18))}, 500);
+				// 		this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
+				// 		// thisDom.addClass("player"+this.num+"Owned");
+				// 		// See if state correlating to move counter
+				// 		this.moveCounter++;
+				// 		// Ensuring purchase prompt doesn't show if player already owns property
+				// 		if (!thisDom.hasClass("player"+this.num+"Owned")) {
+				// 			$(".purchasePrompt").fadeIn(500);
+				// 		}
+				// 	}
+				// }
+			}
+		}
+	}
+// };
+
 };
 // ******************************************************************
 
@@ -326,12 +391,21 @@ Game.prototype.attachListeners = function() {
 		$(".tile").on("dblclick", function() {
 		var tileDom = $(this);
 		self.currentPlayer.move(tileDom);
+		self.armyMove(tileDom);
 		});
+
 
 		// Tile invest check click
 		$("div").on("click", ".owned", function(event) {
 		var tileDom = $(this);
 		self.investPromptFromClick(tileDom);
+		});
+
+		// Soldier select
+		$("#gameContent").on("click", ".soldier", function() {
+			var armyDom = $(this);
+			self.armySelect(armyDom);
+			console.log(self.currentArmy);
 		});
 
 		// Invest
@@ -390,6 +464,15 @@ Game.prototype.logic = function() {
 	if ((this.turnCounter === 2) || (this.turnCounter === 4)) {
 		this.currentPlayer = this.player2;
 		$(".playerIndicator h3").text("Player Turn: 2");
+	}
+
+	if ((this.turnCounter === 1) || (this.turnCounter === 2)) {
+		$(".phaseIndicator").text("Economy");
+	}
+
+	if ((this.turnCounter === 3) || (this.turnCounter === 4)) {
+		$(".phaseIndicator").text("Military");
+		this.variable = true;
 	}
 
 	$(".playerBalances h3:first-child").text(this.player1.balance);
