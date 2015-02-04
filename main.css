@@ -295,8 +295,8 @@ input:focus {
 	position: absolute;
 	width: 70px;
 	height: 70px;
-	border: solid 5px #2095ea;
-	background-color: #2095ea;
+	border: solid 5px white;
+	background-color: #00b9f2;
 	z-index: -6;
 }
 /******************************************************/
@@ -378,6 +378,42 @@ input:focus {
 }
 /******************************************************/
 
+/***************** Water Properties *******************/
+.rowB .water {
+	border-top-color: white;
+}
+
+.water.B {
+	border-left-color: white;
+}
+
+.water.D {
+	border-right-color: white;
+}
+
+.rowD .water {
+	border-bottom-color: white;
+}
+
+.water.F {
+	border-left-color: white;
+}
+
+.water.H {
+	border-right-color: white;
+}
+
+.rowF .water {
+	border-top-color: white;
+}
+
+.rowH .water {
+	border-bottom-color: white;
+}
+
+
+/******************************************************/
+
 /************** Investment Divs ***********************/
 div .i1 {
 	position: absolute;
@@ -423,64 +459,64 @@ div .i4 {
 }
 
 .v2 {
-	background-color: #b0b0b0;
+	background-color: #e6e7e9;
 }
 
 .v3 {
-	background-color: #888888;
+	background-color: #bcbdc1;
 }
 
 .v4 {
-	background-color: #626262;
+	background-color: #949599;
 }
 
 .v5 {
-	background-color: #3a3a3a;
+	background-color: #58595b;
 }
 /******************************************************/
 
 /******************* Ownership ************************/
 .player1Owned {
-	border-color: red;
+	border-color: #ed8584;
 }
 
 .i1.player1Owned {
-	background-color: red;
+	background-color: #ed8584;
 }
 
 .i2.player1Owned {
-	background-color: red;
+	background-color: #ed8584;
 }
 
 .i3.player1Owned {
-	background-color: red;
+	background-color: #ed8584;
 }
 .i4.player1Owned {
-	background-color: red;
+	background-color: #ed8584;
 }
 
 .player2Owned {
-	border-color: yellow;
+	border-color: #f8efa2;
 }
 
 .i1.player2Owned {
-	background-color: yellow;
+	background-color: #f8efa2;
 }
 
 .i2.player2Owned {
-	background-color: yellow;
+	background-color: #f8efa2;
 }
 
 .i3.player2Owned {
-	background-color: yellow;
+	background-color: #f8efa2;
 }
 
 .i4.player2Owned {
-	background-color: yellow;
+	background-color: #f8efa2;
 }
 
 .currentArmy {
-	border: 3px dashed black;
+	border: 3px dashed #58595b;
 }
 /******************************************************/
 

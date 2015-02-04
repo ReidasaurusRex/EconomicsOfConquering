@@ -82,8 +82,8 @@ Player.prototype.move = function(thisDom) {
 function Game() {
 	this.turnCounter = 1;
 	this.attachListeners();
-	this.player1 = new Player(1, "453px", "340px", "red");
-	this.player2 = new Player(2, "773px", "660px", "yellow");
+	this.player1 = new Player(1, "453px", "340px", "#ed8584");
+	this.player2 = new Player(2, "773px", "660px", "#f8efa2");
 	this.currentPlayer = this.player1;
 	this.oppositePlayer = this.player2;
 	this.logicId = setInterval(this.logic.bind(this), 10);
