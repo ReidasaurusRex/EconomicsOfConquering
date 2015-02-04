@@ -281,37 +281,52 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 	var self = this;
 	var styTop = (parseInt(this.currentTile.css("top"), 10) + 32 + "px");
 	var styLeft = (parseInt(this.currentTile.css("left"), 10) + 45 + "px");
-	
-	if (this.currentPlayer.balance >= 75) {	
-		if (!this.currentTile.hasClass("occupied")) {
-			$("#gameContent").prepend("<div class = \"soldier player" + this.currentPlayer.num + "Owned army" + this.currentPlayer.armyCounter + "\"></div>");
-			this.currentTile.addClass("occupied");
-			$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("top", styTop);
-			$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("left", styLeft);
-			$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).css("background-color", this.currentPlayer.coLor);
-			$(".player" + this.currentPlayer.num + "Owned.army" + this.currentPlayer.armyCounter).text(1);
-			this.currentPlayer.armyCounter ++;
-			this.currentPlayer.balance = (this.currentPlayer.balance - 75);
+	var selector = ".player" + this.currentPlayer.num + "Owned.soldier";	
+
+	// Ensuring player has enough dolla dolla bills y'all
+	if (this.currentPlayer.balance >= 75) {
+		var tempArr = [];
+		$(selector).each(function() {
+			if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
+				($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
+					tempArr.push($(this));
+					console.log(tempArr.length);
+			}
+		});
+		
+		// Adding a new army if tile is unoccupied
+		if (tempArr.length === 0) {
+			$("#gameContent").prepend("<div class = \"soldier player" + self.currentPlayer.num + "Owned army" + self.currentPlayer.armyCounter + "\"></div>");
+			self.currentTile.addClass("occupied");
+			$(".player" + self.currentPlayer.num + "Owned.army" + self.currentPlayer.armyCounter).css("top", styTop);
+			$(".player" + self.currentPlayer.num + "Owned.army" + self.currentPlayer.armyCounter).css("left", styLeft);
+			$(".player" + self.currentPlayer.num + "Owned.army" + self.currentPlayer.armyCounter).css("background-color", self.currentPlayer.coLor);
+			$(".player" + self.currentPlayer.num + "Owned.army" + self.currentPlayer.armyCounter).text(1);
+			self.currentPlayer.armyCounter ++;
+			self.currentPlayer.balance = (self.currentPlayer.balance - 75);
 		}
-		else if (this.currentTile.hasClass("occupied")) {
-			var selector = ".player" + this.currentPlayer.num + "Owned.soldier";
-			// Adding new soldier to respective army in selected tile 
+
+		// Adding a soldier to current occupying army
+		if (tempArr.length === 1) {
 			$(selector).each(function() {
 				if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
 					($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
 					$(this).text(parseInt($(this).text(), 10) + 1);
-				} 
+					self.currentPlayer.balance = (self.currentPlayer.balance - 75);
+				}
 			});
-			this.currentPlayer.balance = (this.currentPlayer.balance - 75);
 		}
 	}
 
+	// If the player is too broke
 	else if (this.currentPlayer.balance < 75) {
 		$(".notEnoughFunds").fadeIn(500);
 		setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
 	}
 };
 // ******************************************************************
+
+
 
 // ****************** Army Select Function **************************
 Game.prototype.armySelect = function(armyDom) {
@@ -336,55 +351,65 @@ Game.prototype.armyMove = function(thisDom) {
 	var difLeft = Math.abs(parseInt(thisDom.css("left"), 10) - parseInt(this.currentArmy.css("left"), 10));
 	// Difference between clicked tile and player top/bottom value
 	var difTop = Math.abs(parseInt(thisDom.css("top"), 10)-parseInt(this.currentArmy.css("top"), 10));
+	// Left/right difference between target tile and opposite player
+	var oppDifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - parseInt(this.oppositePlayer.dom.css("left"), 10));
+	// Top/bottom difference between target tile and opposite player
+	var oppDifTop = Math.abs(parseInt(thisDom.css("top"), 10) - parseInt(this.oppositePlayer.dom.css("top"), 10));
+
 	// Max left/right distance allowed
 	var leftPar = (difLeft < 130 && difLeft !== 115); 
 	// Max top/bottom difference allowed
 	var topPar = (difTop < 120);
 	
 	if (game.turnCounter === 3 || game.turnCounter === 4) {
-		// Ensuring player only moves once
+		// Ensuring army only moves once
 		if (!this.currentArmy.hasClass("moved")) {
-			// Ensuring player move distance equals one square
-			if ((topPar && leftPar) && ((difTop != 32) || (difLeft != 45))) {
-						// Moving player
-						this.currentArmy.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 45))}, 500);
-						this.currentArmy.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 32))}, 500);
-						// Adding move exhaustion
-						this.currentArmy.addClass("moved");
-						$(".soldier.player"+this.currentPlayer.num+"Owned").each(function() {
-							if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
-								($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
-								self.currentArmy.text(parseInt(self.currentArmy.text(), 10) + (parseInt($(this).text(), 10)));
+			// Ensuring player move distance equals one square, no diagonal
+			if (((topPar && difLeft === 45) || (leftPar && difTop === 32)) && ((difTop != 32) || (difLeft != 45))) {
+				// Ensuring army cannot move to a tile containing opposite player
+				if ((oppDifLeft !== 18) || (oppDifTop !== 30)) {
+					// Moving player
+					this.currentArmy.animate({"left": ((parseInt((thisDom.css("left")), 10) + 45))}, 500);
+					this.currentArmy.animate({"top": ((parseInt((thisDom.css("top")), 10) + 32))}, 500);
+					// Adding move exhaustion
+					this.currentArmy.addClass("moved");
+					// Combinging same player armies if present
+					$(".soldier.player"+this.currentPlayer.num+"Owned").each(function() {
+						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
+							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
+							self.currentArmy.text(parseInt(self.currentArmy.text(), 10) + (parseInt($(this).text(), 10)));
+							$(this).remove();
+						}
+					});
+					// Opposite player armies defeating each other
+					$(".soldier.player"+this.oppositePlayer.num+"Owned").each(function() {
+						var thisNumber = parseInt($(this).text(), 10);
+						var playerNumber = parseInt(self.currentArmy.text(), 10);
+						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
+							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
+							console.log("opposite player present");
+							// Current player wins
+							if (playerNumber > thisNumber) {
+								self.currentArmy.text(playerNumber - thisNumber);
 								$(this).remove();
 							}
-						});
-						$(".soldier.player"+this.oppositePlayer.num+"Owned").each(function() {
-							var thisNumber = parseInt($(this).text(), 10);
-							var playerNumber = parseInt(self.currentArmy.text(), 10);
-							if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
-								($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
-								console.log("opposite player present");
-								if (playerNumber > thisNumber) {
-									self.currentArmy.text(playerNumber - thisNumber);
-									$(this).remove();
-								}
-								else if (thisNumber > playerNumber) {
-									$(this).text(thisNumber - playerNumber);
-									self.currentArmy.remove();
-								}
-
-								else if (thisNumber === playerNumber) {
-									self.currentArmy.remove();
-									$(this).remove();
-								}
-
-								
+							// Opposite player wins
+							else if (thisNumber > playerNumber) {
+								$(this).text(thisNumber - playerNumber);
+								self.currentArmy.remove();
 							}
-						});
+							// Tie: both defeated
+							else if (thisNumber === playerNumber) {
+								self.currentArmy.remove();
+								$(this).remove();
+							}
+						}
+					});
+				}
+
 			}
 		}
 	}
-
 };
 // ******************************************************************
 
