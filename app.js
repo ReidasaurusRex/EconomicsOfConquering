@@ -26,29 +26,29 @@ Player.prototype.move = function(thisDom) {
 	// Difference between clicked tile and player top/bottom value
 	var difTop = Math.abs(parseInt(thisDom.css("top"), 10)-parseInt(this.dom.css("top"), 10));
 	// Max left/right distance allowed
-	var leftPar = (difLeft < 120); 
+	var leftPar = (difLeft < 58); 
 	// Max top/bottom difference allowed
-	var topPar = (difTop < 120);
+	var topPar = (difTop < 67);
 	// Player 1 same top check
-	var player1DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player1.dom.css("top"), 10) - 30));
+	var player1DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player1.dom.css("top"), 10) - 18));
 	// Player 1 same left check
-	var player1DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player1.dom.css("left"), 10) - 18));
+	var player1DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player1.dom.css("left"), 10) - 9));
 	// Player 2 same top check
-	var player2DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player2.dom.css("top"), 10) - 30));
+	var player2DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player2.dom.css("top"), 10) - 18));
 	// Player 2 same left check
-	var player2DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player2.dom.css("left"), 10) - 18));
+	var player2DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player2.dom.css("left"), 10) - 9));
 
 	if (game.turnCounter === 1 || game.turnCounter === 2) {
 		// Ensuring player only moves once
 		if (this.moveCounter === 0) {
 			// Ensuring player move distance equals one square
-			if ((topPar && leftPar) && ((difTop != 30) || (difLeft != 18))) {
+			if ((topPar && leftPar) && ((difTop != 18) || (difLeft != 9))) {
 				// Ensuring player2 cannot move on top of player1
 				if (game.currentPlayer === game.player2) {
 					if ((player1DifLeft !== 0) || (player1DifTop !== 0)) {
 						game.currentTile = thisDom;
-						this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 18))}, 500);
-						this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 30))}, 500);
+						this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 9))}, 500);
+						this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 18))}, 500);
 						// thisDom.addClass("player"+this.num+"Owned");
 						// See if state correlating to move counter
 						this.moveCounter++;
@@ -63,8 +63,8 @@ Player.prototype.move = function(thisDom) {
 				if (game.currentPlayer === game.player1) {
 					if ((player2DifLeft !== 0) || (player2DifTop !== 0)) {
 						game.currentTile = thisDom;
-						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 18))}, 500);
-						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 30))}, 500);
+						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 9))}, 500);
+						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 18))}, 500);
 						// thisDom.addClass("player"+this.num+"Owned");
 						// See if state correlating to move counter
 						this.moveCounter++;
@@ -84,20 +84,26 @@ Player.prototype.move = function(thisDom) {
 
 // ******************** Game Constructor ****************************
 function Game() {
-	this.turnCounter = 1;
 	this.attachListeners();
-	this.player1 = new Player(1, "453px", "340px", "#ed8584");
-	this.player2 = new Player(2, "773px", "660px", "#f8efa2");
+	this.turnCounter = 1;
+	this.player1 = new Player(1, "630px", "264px", "#ed8584");
+	this.player2 = new Player(2, "822px", "456px", "#f8efa2");
 	this.currentPlayer = this.player1;
 	this.oppositePlayer = this.player2;
+	this.currentTile = $(".rowC .C");
 	this.logicId = setInterval(this.logic.bind(this), 10);
+	
+	// Hiding elements and prompts
 	$(".purchasePrompt").hide().css("visibility", "visible");
 	$(".notEnoughFunds").hide().css("visibility", "visible");
 	$(".tooFarToInvest").hide().css("visibility", "visible");
 	$(".moveOrInvest").hide().css("visibility", "visible");
-	this.currentTile = $(".rowC .C");
 	$("#gameContent").hide().css("visibility", "visible");
 	$(".fullyInvested").hide().css("visibility", "visible");
+	$(".navBar h4").hide().css("visibility", "visible");
+	$(".instruction instructTitle").hide();
+	$(".instructions .instructMilitary").hide();
+	$(".instructions .instructEconomy").hide()
 }
 // ******************************************************************
 
@@ -111,23 +117,23 @@ Game.prototype.turnChange = function() {
 
 	// Income from properties
 	$(".player"+this.currentPlayer.num+"Owned.tile.v5").each(function(){
-		self.currentPlayer.balance += 50;
+		self.currentPlayer.balance += 30;
 	});
 
 	$(".player"+this.currentPlayer.num+"Owned.tile.v4").each(function(){
-		self.currentPlayer.balance += 55;
+		self.currentPlayer.balance += 35;
 	});
 
 	$(".player"+this.currentPlayer.num+"Owned.tile.v3").each(function(){
-		self.currentPlayer.balance += 60;
+		self.currentPlayer.balance += 40;
 	});
 
 	$(".player"+this.currentPlayer.num+"Owned.tile.v2").each(function(){
-		self.currentPlayer.balance += 65;
+		self.currentPlayer.balance += 45;
 	});
 
 	$(".player"+this.currentPlayer.num+"Owned.tile.v1").each(function(){
-		self.currentPlayer.balance += 70;
+		self.currentPlayer.balance += 50;
 	});
 
 	// Income from investments
@@ -137,9 +143,27 @@ Game.prototype.turnChange = function() {
 
 	if (this.turnCounter < 4) {
 		this.turnCounter++;
+		if (this.turnCounter === 3) {
+			$(".instructions .instructEconomy").fadeOut(500);
+			$(".phaseIndicator").fadeOut(500);
+			setTimeout(function() {
+				$(".instructions .instructMilitary").fadeIn(500);
+				$(".phaseIndicator").text("Military");
+				$(".phaseIndicator").fadeIn(500);
+			}, 500);
+		}
 	}
 	else if (this.turnCounter === 4) {
 		this.turnCounter = 1;
+		if (this.turnCounter === 1) {
+			$(".instructions .instructMilitary").fadeOut(500);
+			$(".phaseIndicator").fadeOut(500);
+			setTimeout(function() {
+				$(".instructions .instructEconomy").fadeIn(500);
+				$(".phaseIndicator").text("Economy");
+				$(".phaseIndicator").fadeIn(500);
+			}, 500);
+		}
 	}
 	console.log(this.currentPlayer.num);
 
@@ -147,9 +171,11 @@ Game.prototype.turnChange = function() {
 	$(".purchasePrompt").fadeOut(500);
 	$(".moveOrInvest").fadeOut(500);
 	$(".tooFarToInvest").fadeOut(500);
-	// Ensuring no soldiers are left over selected
+
 	$(".soldier").each(function(){
+		// Ensuring no soldiers are left over selected
 		$(this).removeClass("currentArmy");
+		// Ensuring soldiers are free to move again next turn
 		$(this).removeClass("moved");
 	});
 	this.currentArmy = "";
@@ -299,16 +325,16 @@ Game.prototype.invest = function(tileDom) {
 // ****************** Soldier Purchase Function *********************
 Game.prototype.purchaseSoldier = function(tileDom) {
 	var self = this;
-	var styTop = (parseInt(this.currentTile.css("top"), 10) + 32 + "px");
-	var styLeft = (parseInt(this.currentTile.css("left"), 10) + 45 + "px");
+	var styTop = (parseInt(this.currentTile.css("top"), 10) + 18 + "px");
+	var styLeft = (parseInt(this.currentTile.css("left"), 10) + 30 + "px");
 	var selector = ".player" + this.currentPlayer.num + "Owned.soldier";	
 
 	// Ensuring player has enough dolla dolla bills y'all
 	if (this.currentPlayer.balance >= 75) {
 		var tempArr = [];
 		$(selector).each(function() {
-			if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
-				($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
+			if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
+				($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
 					tempArr.push($(this));
 					console.log(tempArr.length);
 			}
@@ -329,8 +355,8 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 		// Adding a soldier to current occupying army
 		if (tempArr.length === 1) {
 			$(selector).each(function() {
-				if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
-					($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
+				if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
+					($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
 					$(this).text(parseInt($(this).text(), 10) + 1);
 					self.currentPlayer.balance = (self.currentPlayer.balance - 75);
 				}
@@ -377,20 +403,20 @@ Game.prototype.armyMove = function(thisDom) {
 	var oppDifTop = Math.abs(parseInt(thisDom.css("top"), 10) - parseInt(this.oppositePlayer.dom.css("top"), 10));
 
 	// Max left/right distance allowed
-	var leftPar = (difLeft < 130 && difLeft !== 115); 
+	var leftPar = (difLeft < 79 && difLeft !== 66); 
 	// Max top/bottom difference allowed
-	var topPar = (difTop < 120);
+	var topPar = (difTop < 67);
 	
 	if (game.turnCounter === 3 || game.turnCounter === 4) {
 		// Ensuring army only moves once
 		if (!this.currentArmy.hasClass("moved")) {
 			// Ensuring player move distance equals one square, no diagonal
-			if (((topPar && difLeft === 45) || (leftPar && difTop === 32)) && ((difTop != 32) || (difLeft != 45))) {
+			if (((topPar && difLeft === 30) || (leftPar && difTop === 18)) && ((difTop !== 18) || (difLeft !== 30))) {
 				// Ensuring army cannot move to a tile containing opposite player
-				if ((oppDifLeft !== 18) || (oppDifTop !== 30)) {
+				if ((oppDifLeft !== 9) || (oppDifTop !== 18)) {
 					// Moving player
-					this.currentArmy.animate({"left": ((parseInt((thisDom.css("left")), 10) + 45))}, 500);
-					this.currentArmy.animate({"top": ((parseInt((thisDom.css("top")), 10) + 32))}, 500);
+					this.currentArmy.animate({"left": ((parseInt((thisDom.css("left")), 10) + 30))}, 500);
+					this.currentArmy.animate({"top": ((parseInt((thisDom.css("top")), 10) + 18))}, 500);
 					console.log(self.currentTile);
 					console.log(self.oppositePlayer);
 					if (this.currentTile.hasClass("player"+this.currentPlayer.num+"Owned")) {
@@ -403,19 +429,19 @@ Game.prototype.armyMove = function(thisDom) {
 					this.currentArmy.addClass("moved");
 					// Combinging same player armies if present
 					$(".soldier.player"+this.currentPlayer.num+"Owned").each(function() {
-						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
-							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
+						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
+							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
 							self.currentArmy.text(parseInt(self.currentArmy.text(), 10) + (parseInt($(this).text(), 10)));
 							$(this).remove();
 						}
 					});
+					var tempArr = [];
 					// Opposite player armies defeating each other
 					$(".soldier.player"+this.oppositePlayer.num+"Owned").each(function() {
 						var thisNumber = parseInt($(this).text(), 10);
 						var playerNumber = parseInt(self.currentArmy.text(), 10);
-						var tempArr = [];
-						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 32 + "px")) && 
-							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 45 + "px"))) {
+						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
+							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
 							console.log("opposite player present");
 							tempArr.push($(this));
 							// Current player wins
@@ -444,8 +470,10 @@ Game.prototype.armyMove = function(thisDom) {
 								self.currentArmy.remove();
 								$(this).remove();
 							}
-							else if (tempArr.length === 0) {
-								console.log(self.oppositePlayer.num);
+						}
+					});
+					if (tempArr.length === 0) {
+								console.log("holla holla holla holla holla");
 								if (self.currentTile.hasClass("player"+self.oppositePlayer.num+"Owned")) {
 									$(self.currentTile).find(".invested").each(function() {
 										($this).remove();
@@ -453,9 +481,7 @@ Game.prototype.armyMove = function(thisDom) {
 								self.currentTile.removeClass("player"+self.oppositePlayer.num+"Owned");
 								self.currentTile.addClass("player"+self.currentPlayer.num+"Owned");
 								}
-							}
-						}
-					});
+					}
 				}
 
 			}
@@ -469,10 +495,15 @@ Game.prototype.attachListeners = function() {
 	var self = this;
 		
 		// New Game
-		$(".newGame").on("click", function(){
+		$(".firstGame").on("click", function(){
 			$("#landingPage").fadeOut(600);
-			setTimeout(function(){$("#gameContent").fadeIn(1500);}, 1000);
-			console.log($(".tile.player"+self.oppositePlayer.num+"Owned").length);
+			setTimeout(function(){
+				$("#gameContent").fadeIn(1500);
+				$(".navBar .viewReadMe").fadeIn(1500);
+				$(".navBar .startNewGame").fadeIn(1500);
+				$(".instructions .instructTitle").fadeIn(1500);
+				$(".instructions .instructEconomy").fadeIn(1500);
+			}, 1000);
 		});
 
 		// Tile dblclick
@@ -556,20 +587,15 @@ Game.prototype.logic = function() {
 		$(".playerIndicator h3").text("Player Turn: 2");
 	}
 
-	// Showing Economy or Military indicator
-	if ((this.turnCounter === 1) || (this.turnCounter === 2)) {
-		$(".phaseIndicator").text("Economy");
-	}
-	if ((this.turnCounter === 3) || (this.turnCounter === 4)) {
-		$(".phaseIndicator").text("Military");
-		this.variable = true;
-	}
+	$(".player1Balance").text(this.player1.balance);
+	$(".player2Balance").text(this.player2.balance);
+
 
 	// Victory check
-	if ($(".tile.player"+this.currentPlayer.num+"Owned").length === 4) {
-		alert("Game, blouses");
-		clearInterval(this.logicId);
-	}
+	// if ($(".tile.player"+this.currentPlayer.num+"Owned").length === 4) {
+	// 	alert("Game, blouses");
+	// 	clearInterval(this.logicId);
+	// }
 	$(".playerBalances h3:first-child").text(this.player1.balance);
 	$(".playerBalances h3:last-child").text(this.player2.balance);
 };

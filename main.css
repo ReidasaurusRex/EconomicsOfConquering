@@ -1,54 +1,111 @@
+/******************** General *************************/
+/*@font-face {
+	font-family: "Effra";
+	src: ;*/
+}
+h1, h2, h3, h4 {
+	font-family: "Franklin Gothic", sans-serif;
+}
+/******************************************************/
+
+/****************** Headline **************************/
+#headline h1, #headline div {
+	display: inline-block;
+}
+
+#headline h1, #headline h4 {
+	cursor: default;
+	color: #6dcff6;
+	margin-bottom: 0px;
+}
+
+#headline h1 {
+	margin-top: 40px;
+	margin-left: 220px;
+	font-size: 3em;
+}
+
+#headline .navBar {
+	position: absolute;
+	margin-left: 560px;
+	margin-top: 50px;
+}
+
+#headline .navBar .startNewGame {
+	margin-left: 40px;
+}
+
+#headline .navBar h4 {
+ display: inline-block;
+ font-size: 1.1em;
+ cursor: pointer;
+}
+
+#headline hr {
+	border: 1px solid #2f86f5;
+
+}
+/******************************************************/
+
 /***************** Landing Page ***********************/
 #landingPage {
 	position: absolute;
-	width: 60%;
+	width: 90%;
 	height: 60%;
-	margin-left: 20%;
-	margin-top: 12%;
-}
-
-#landingPage h1 {
-	margin-top: 40px;
-
-}
-
-#landingPage h1 {
-	cursor: default;
+	margin-left: 5%;
+	margin-top: 0%;
 }
 
 #landingPage h3 {
 	cursor: default;
+	font-size: 1.5em;
+	text-align: center;
 }
 
 #landingPage h2 {
 	cursor: pointer;
 }
 
-#landingPage div {
+#landingPage div:first-child {
 	margin-top: 60px;
-	margin-left: 180px;
-	width: 300px;
+	margin-left: 260px;
+	width: 600px;
 }
 
 #landingPage h3 {
-	color: black;
+	color: #c7c8ca;
 }
 
-#landingPage h2 {
+/*#landingPage h2 {
 	display: inline-block;
-}
+}*/
 
 #landingPage .viewReadMe {
-	margin-left: 140px;
-	margin-top: 35px;
+	margin-left: 489px;
+	margin-top: 70px;
+	margin-bottom: 70px;
+	color: #6dcff6;
 }
 
-#landingPage .newGame {
-	margin-left: 60px;
+#landingPage .firstGame {
+	margin-left: 508px;
+	color: #6dcff6;
 }
-
+/*
 #landingPage h2:last-child {
 	margin-left: 60px;
+}*/
+
+#landingPage .redIcon {
+	position: absolute;
+	top: 200px;
+	left: 20px;
+}
+
+#landingPage .yellowIcon {
+	position: absolute;
+	left: 790px;
+	top: 220px;
 }
 /******************************************************/
 
@@ -56,7 +113,7 @@
 
 /******************* Game General *********************/
 h3 {
-	color: gray;
+	color: #c7c8ca;
 	cursor: default;
 }
 
@@ -68,8 +125,8 @@ h3 {
 /********************* Player 1 ***********************/
 .player1 {
 	position: absolute;
-	height: 20px;
-	width: 20px;
+	height: 12px;
+	width: 12px;
 	z-index: 1;
 }
 
@@ -78,8 +135,8 @@ h3 {
 /********************* Player 2 ***********************/
 .player2 {
 	position: absolute;
-	height: 20px;
-	width: 20px;
+	height: 12px;
+	width: 12px;
 	z-index: 1;
 }
 /******************************************************/
@@ -87,10 +144,10 @@ h3 {
 /******************** Soldiers ************************/
 .soldier {
 	position: absolute;
-	height: 16px;
-	width: 16px;
+	height: 9.6px;
+	width: 9.6px;
 	z-index: 1;
-	border-radius: 8px;
+	border-radius: 6px;
 	text-align: center;
 }
 
@@ -99,86 +156,56 @@ h3 {
 /*************** Left Column Styling ******************/
 .leftColumn {
 	position: absolute;
-	top: 260px;
-	left: 20px;
+	top: 140px;
+	left: 225px;
 	height: 500px;
 	width: 240px;
-	background-color: black;
+}
+
+.leftColumn h2 {
+	color: #6dcff6;
 }
 
 .leftColumn h3 {
-	color: white;
+	color: #c7c8ca;
+}
+
+.instructions .instructEconomy {
+	position: absolute;
+	margin-top: 0px;
+}
+
+.instructions .instructMilitary {
+	position: absolute;
+	margin-top: 0px;
 }
 
 .phaseIndicator {
-	font-size: 1.6em;
-	margin-left: 10px;
-	margin-top: 50px;
+	position: absolute;
+	margin-left: 0px;
+	margin-top: 252px;
 }
 
-.playerIndicator {
-	position: relative;
-	top: 40px;
-	left: 10px;
-}
-
-.playerIndicator h3 {
-	font-size: 1.6em;
-}
-
-.turn {
+/*.turn {
 	position: absolute;
 	top: 140px;
 	left: 10px;
-}
+}*/
 
-input[type=submit] {
-	font-size: 1.4em;
-	background: white;
-	color: gray;
-	border: 0;
-	cursor: pointer;
-}
-
-input:focus {
-	outline: none;
-}
-/******************************************************/
-
-/************** Right Column Styling ******************/
-/***************** Balances ***************************/
 .balances {
 	position: absolute;
-	top: 140px;
-	left: 10px;
-}
-
-.balances span {
-	margin-left: 20px;
-}
-
-.playerBalances {
-	position: absolute;
-	top: 90px;
+	top: 358px;
 	left: 0px;
 }
 
-.playerBalances h3 {
-	display: inline-block;
+.balances .playerName {
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
-
-.playerBalances h3:last-child {
-	margin-left: 65px;
-}
-
-.balances h3 {
-	font-size: 1.4em;
-}
-
-.balances > h3:first-child {
-	font-size: 1.6em;
-	margin-left: 0px;
+.balances .playerBalance {
+	margin-top: 0px;
+	margin-bottom: 10px;
 }
 /******************************************************/
 
@@ -266,7 +293,7 @@ input:focus {
 
 .tooFarToInvest h3 {
 	font-size: 1.6em;
-	color: gray;
+	color: #c7c8ca;
 	cursor: pointer;
 }
 
@@ -284,18 +311,17 @@ input:focus {
 /**************** General Properties ******************/
 .tile {
 	position: absolute;
-	width: 70px;
-	height: 70px;
-	border: solid 5px white;
-	background-color: black;
+	width: 42px;
+	height: 42px;
+	border: solid 3px white;
 	z-index: -5;
 }
 
 .water {
 	position: absolute;
-	width: 70px;
-	height: 70px;
-	border: solid 5px white;
+	width: 42px;
+	height: 42px;
+	border: solid 3px white;
 	background-color: #00b9f2;
 	z-index: -6;
 }
@@ -307,79 +333,78 @@ input:focus {
 }
 
 .rowB div {
-	top: 230px;
+	top: 198px;
 }
 
 .rowC div {
-	top: 310px;
+	top: 246px;
 }
 
 .rowD div {
-	top: 390px;
+	top: 294px;
 }
 
 .rowE div {
-	top: 470px;
+	top: 342px;
 }
 
 .rowF div {
-	top: 550px;
+	top: 390px;
 }
 
 .rowG div {
-	top: 630px;
+	top: 438px;
 }
 
 .rowH div {
-	top: 710px;
+	top: 486px;
 }
 
 .rowI div {
-	top: 790px;
-	margin-bottom: 150px;
+	top: 534px;
 }
 /******************************************************/
 
 /**************** Column Settings *********************/
 .A {
-	left: 275px;
+	left: 525px;
 }
 
 .B {
-	left: 355px;
+	left: 573px;
 }
 
 .C {
-	left: 435px;
+	left: 621px;
 }
 
 .D {
-	left: 515px;
+	left: 669px;
 }
 
 .E {
-	left: 595px;
+	left: 717px;
 }
 
 .F {
-	left: 675px;
+	left: 765px;
 }
 
 .G {
-	left: 755px;
+	left: 813px;
 }
 
 .H {
-	left: 835px;
+	left: 861px;
 }
 
 .I {
-	left: 915px;
+	left: 909px;
 }
 /******************************************************/
 
 /***************** Water Properties *******************/
-.rowB .water {
+/*.rowB .water {
 	border-top-color: white;
 }
 
@@ -410,15 +435,15 @@ input:focus {
 .rowH .water {
 	border-bottom-color: white;
 }
-
+*/
 
 /******************************************************/
 
 /************** Investment Divs ***********************/
 div .i1 {
 	position: absolute;
-	height: 15px;
-	width: 15px;
+	height: 9px;
+	width: 9px;
 	top: 0px;
 	left: 0px;
 	z-index: 5;
@@ -427,8 +452,8 @@ div .i1 {
 
 div .i2 {
 	position: absolute;
-	height: 15px;
-	width: 15px;
+	height: 9px;
+	width: 9px;
 	top: 0;
 	left: 78%;
 	z-index: 5;
@@ -436,8 +461,8 @@ div .i2 {
 
 div .i3 {
 	position: absolute;
-	height: 15px;
-	width: 15px;
+	height: 9px;
+	width: 9px;
 	top: 78%;
 	left: 0;
 	z-index: 5;
@@ -445,8 +470,8 @@ div .i3 {
 
 div .i4 {
 	position: absolute;
-	height: 15px;
-	width: 15px;
+	height: 9px;
+	width: 9px;
 	top: 78%;
 	left: 78%;
 	z-index: 5;

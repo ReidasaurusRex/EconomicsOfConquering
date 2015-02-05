@@ -16,14 +16,29 @@
 
 <body>
 <!-- ************** Landing Page ************************ -->
+<div id="headline">
+	<h1>CONQUER</h1>
+	<div class="navBar">
+		<h4 class = "viewReadMe">Read Me</h4>
+		<h4 class = "startNewGame">New Game</h4>
+	</div>
+	<hr>
+</div>
+<!-- **************************************************** -->
+
+<!-- ************** Landing Page ************************ -->
 <div id="landingPage">
-	<h1>Welcome to Conquer!</h1>
 	<div>
 		<h3>If this is your first time here, we highly recommend you view the ReadMe before beginning play!</h3>
 	</div>
 	<h2 class = "viewReadMe">View ReadMe</h2>
-	<h2 class = "newGame">New Game</h2>
-	<h2 class = "loadGame">Load Game</h2>
+	<h2 class = "firstGame">New Game</h2>
+	<div class="redIcon">
+		<img src = "./images/red.svg" height="300" width="300">
+	</div>
+	<div class="yellowIcon">
+		<img src = "./images/yellow.svg" height="300" width="300">
+	</div>
 </div>
 <!-- **************************************************** -->
 
@@ -37,7 +52,12 @@
 
 <!--     ************ Left side indicators ******************     -->
 	<div class="leftColumn">
-	<h3 class="phaseIndicator">Economy</h3>
+		<div class="instructions">
+			<h2 class="instructTitle">Instructions</h2>
+			<h3 class="instructEconomy">Move your trader by double clicking on surrounding tiles, and purchase tiles by responding to the prompt. Unowned tiles will cost 100, while opponent tiles cost 200. Your trader can only move once per turn. Single click on already owned properties to invest or purchase soldiers. Investments cost 50 each, soldiers cost 75. </h3>
+			<h3 class="instructMilitary">Select your army by single clicking, then move the army by double clicking. Merging armies merge permanently. Combat with an opponent is numerically based; the higher number wins. Each army unit can only move once per turn. Armies can only conquer opponent owned territories, and remove investments in the process. </h3>
+		</div>
+	<!-- <h3 class="phaseIndicator">Economy</h3>
 		
 		<div class="playerIndicator">
 			<h3>Player Turn: 1</h3>
@@ -50,7 +70,7 @@
 				<h3 class="player1Balance">500</h3>
 				<h3 class="player2Balance">500</h3>
 			</div>
-		</div>
+		</div> -->
 
 	</div>
 <!--     *****************************************************    -->
@@ -191,6 +211,24 @@
 <!-- ******************** Game Show ***************************** -->
 </div>
 <!--     ****************************************************     -->
+
+<!--     ************ Left side indicators ******************     -->
+<div class="leftColumn">
+	<div class="instructions">
+		<h2 class="instructTitle">Instructions</h2>
+		<h3 class="instructEconomy">Move your trader by double clicking on surrounding tiles, and purchase tiles by responding to the prompt. Unowned tiles will cost 100, while opponent tiles cost 200. Your trader can only move once per turn. Single click on already owned properties to invest or purchase soldiers. Investments cost 50 each, soldiers cost 75. </h3>
+		<h3 class="instructMilitary">Select your army by single clicking, then move the army by double clicking. Merging armies merge permanently. Combat with an opponent is numerically based; the higher number wins. Each army unit can only move once per turn. Armies can only conquer opponent owned territories, and remove investments in the process. </h3>
+	</div>
+	<h3 class="phaseIndicator">Economy</h3>
+	<div class="balances">
+		<h3 class="player1Name playerName">Player 1</h3>
+			<h4 class="playerBalance player1Balance">500</h4>
+		<h3 class="player2Name playerName">Player 2</h3>
+			<h4 class="playerBalance player2Balance">500</h4>
+	</div>
+
+</div>
+<!--     *****************************************************    -->
 
 <!--     ************ Right side indicators *****************     -->
 	<div class="purchasePrompt">
