@@ -54,7 +54,9 @@ Player.prototype.move = function(thisDom) {
 						this.moveCounter++;
 						// Ensuring purchase prompt doesn't show if player already owns property
 						if (!thisDom.hasClass("player"+this.num+"Owned")) {
-							$(".purchasePrompt").fadeIn(500);
+							setTimeout(function() {$(".purchasePrompt").fadeIn(250);}, 250);
+							$(".moveOrInvest").fadeOut(250);
+							$(".tooFarToInvest").fadeOut(250);
 						}
 					}
 				}
@@ -68,7 +70,9 @@ Player.prototype.move = function(thisDom) {
 						this.moveCounter++;
 						// Ensuring purchase prompt doesn't show if player already owns property
 						if (!thisDom.hasClass("player"+this.num+"Owned")) {
-							$(".purchasePrompt").fadeIn(500);
+							setTimeout(function() {$(".purchasePrompt").fadeIn(250);}, 250);
+							$(".moveOrInvest").fadeOut(250);
+							$(".tooFarToInvest").fadeOut(250);
 						}
 					}
 				}
@@ -106,8 +110,24 @@ Game.prototype.turnChange = function() {
 	this.player2.moveCounter = 0;
 
 	// Income from properties
-	$(".player"+this.currentPlayer.num+"Owned.tile").each(function(){
+	$(".player"+this.currentPlayer.num+"Owned.tile.v5").each(function(){
 		self.currentPlayer.balance += 50;
+	});
+
+	$(".player"+this.currentPlayer.num+"Owned.tile.v4").each(function(){
+		self.currentPlayer.balance += 55;
+	});
+
+	$(".player"+this.currentPlayer.num+"Owned.tile.v3").each(function(){
+		self.currentPlayer.balance += 60;
+	});
+
+	$(".player"+this.currentPlayer.num+"Owned.tile.v2").each(function(){
+		self.currentPlayer.balance += 65;
+	});
+
+	$(".player"+this.currentPlayer.num+"Owned.tile.v1").each(function(){
+		self.currentPlayer.balance += 70;
 	});
 
 	// Income from investments
