@@ -12,7 +12,7 @@ function Player(num, styLeft, styTop, coLor) {
 	this.dom.css("background-color", coLor);
 	this.coLor = coLor;
 	this.moveCounter = 0;
-	this.balance = 500;
+	this.balance = 400;
 	this.armyCounter = 0;
 	this.wins = localStorage.getItem("Player "+this.num + " Wins");
 
@@ -525,8 +525,8 @@ Game.prototype.resetFunction = function() {
 	$(".gameResetPrompt").fadeOut(500);
 	$(".turn").fadeOut(500);
 	setTimeout(function(){
-		self.player1.balance = 500;
-		self.player2.balance = 500;
+		self.player1.balance = 400;
+		self.player2.balance = 400;
 		self.turnCounter = 1;
 		self.player1.dom.css("left", "630px");
 		self.player1.dom.css("top", "264px");
