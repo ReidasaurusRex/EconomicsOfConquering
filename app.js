@@ -520,8 +520,10 @@ Game.prototype.resetPrompt = function() {
 Game.prototype.resetFunction = function() {
 	var self = this;
 	$("#gameContent").fadeOut(500);
-	$(".instructions").fadeOut(500);
+	$(".instructMilitary").fadeOut(500);
+	$(".instructEconomy").fadeOut(500);
 	$(".gameResetPrompt").fadeOut(500);
+	$(".turn").fadeOut(500);
 	setTimeout(function(){
 		self.player1.balance = 500;
 		self.player2.balance = 500;
@@ -547,10 +549,11 @@ Game.prototype.resetFunction = function() {
 		$(".rowC .C").addClass("player1Owned owned");
 		$(".rowG .G").addClass("player2Owned owned");
 		$(".turn").css("top", "338px");
+		$("#phaseIndicator").text("Economic");
 	}, 500);
 	setTimeout(function() {
 		$("#gameContent").fadeIn(1200);
-		$(".instructions").fadeIn(1200);
+		$(".instructEconomy").fadeIn(1200);
 	}, 600);
 };
 
