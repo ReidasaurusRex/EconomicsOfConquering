@@ -554,6 +554,7 @@ Game.prototype.resetFunction = function() {
 	setTimeout(function() {
 		$("#gameContent").fadeIn(1200);
 		$(".instructEconomy").fadeIn(1200);
+		$(".turn").fadeIn(1200);
 	}, 600);
 };
 
