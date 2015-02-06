@@ -1,10 +1,15 @@
 /******************** General *************************/
-/*@font-face {
-	font-family: "Effra";
-	src: ;*/
-}
 h1, h2, h3, h4 {
 	font-family: "Franklin Gothic", sans-serif;
+}
+
+h2 {
+	color: #6dcff6;
+}
+
+h3, p {
+	color: #c7c8ca;
+	cursor: default;
 }
 /******************************************************/
 
@@ -76,10 +81,6 @@ h1, h2, h3, h4 {
 	color: #c7c8ca;
 }
 
-/*#landingPage h2 {
-	display: inline-block;
-}*/
-
 #landingPage .viewReadMe {
 	margin-left: 489px;
 	margin-top: 70px;
@@ -91,10 +92,6 @@ h1, h2, h3, h4 {
 	margin-left: 508px;
 	color: #6dcff6;
 }
-/*
-#landingPage h2:last-child {
-	margin-left: 60px;
-}*/
 
 #landingPage .redIcon {
 	position: absolute;
@@ -109,7 +106,32 @@ h1, h2, h3, h4 {
 }
 /******************************************************/
 
+/******************** ReadMe Page *********************/
+#readMePage {
+	visibility: hidden;
+	width: 70%;
+	margin-left: 17.6%;
+}
 
+#readMePage div {
+	display: inline-block;
+}
+
+#readMePage div span, #readMePage h2 {
+	color: #6dcff6;
+}
+
+.goToGame h3 {
+	color: #6dcff6;
+	cursor: pointer;
+}
+
+.goToGame.readMeTop {
+	position: absolute;
+	top: 65px;
+	left: 1000px;
+}
+/******************************************************/
 
 /******************* Game General *********************/
 h3 {
@@ -129,7 +151,6 @@ h3 {
 	width: 12px;
 	z-index: 1;
 }
-
 /******************************************************/
 
 /********************* Player 2 ***********************/
@@ -144,10 +165,9 @@ h3 {
 /******************** Soldiers ************************/
 .soldier {
 	position: absolute;
-	height: 9.6px;
-	width: 9.6px;
+	height: 14px;
+	width: 14px;
 	z-index: 1;
-	border-radius: 6px;
 	text-align: center;
 }
 
@@ -156,7 +176,7 @@ h3 {
 /*************** Left Column Styling ******************/
 .leftColumn {
 	position: absolute;
-	top: 140px;
+	top: 135px;
 	left: 225px;
 	height: 500px;
 	width: 240px;
@@ -180,17 +200,12 @@ h3 {
 	margin-top: 0px;
 }
 
-.phaseIndicator {
+#phaseIndicator {
 	position: absolute;
 	margin-left: 0px;
-	margin-top: 252px;
+	margin-top: 262px;
+	color: #6dcff6;
 }
-
-/*.turn {
-	position: absolute;
-	top: 140px;
-	left: 10px;
-}*/
 
 .balances {
 	position: absolute;
@@ -204,34 +219,56 @@ h3 {
 }
 
 .balances .playerBalance {
+	color: #c7c8ca;
 	margin-top: 0px;
 	margin-bottom: 10px;
 }
+
+.turn h4 {
+	color: #c7c8ca;
+}
+
+.turn {
+	position: absolute;
+	top: 338px;
+	left: -100px;
+}
+
+.turn div, .turn h4 {
+	display: inline-block;
+}
+
+.turnSign {
+	height: 8px;
+	width: 8px;
+	border-radius: 4px;
+	background-color: #7fd7a5;
+}
+
 /******************************************************/
 
 /****************** Purchase Prompt *******************/
 .purchasePrompt {
 	position: absolute;
-	top: 300px;
+	top: 135px;
 	left: 1021px;
 	visibility: hidden;
 }
 
 .purchasePrompt h3 {
-	font-size: 1.4em;
+	font-size: 1.3em;
 }
 
 .yesNo h3 {
-	display: inline-block;
 	cursor: pointer;
 }
 
 .purchaseYes {
-	margin-left: 55px;
+	margin-left: 0px;
 }
 
 .purchaseNo {
-	margin-left: 40px;
+	margin-left: 0px;
 }
 
 /******************************************************/
@@ -240,73 +277,78 @@ h3 {
 .notEnoughFunds {
 	visibility: hidden;
 	position: absolute;
-	top: 540px;
-	left: 1040px;
+	top: 350px;
+	left: 1034px;
 }
 
 .notEnoughFunds h3 {
-	font-size: 1.4em;
+	font-size: 1.3em;
 }
 /******************************************************/
 
 /*************** Invest Prompts ***********************/
 .fullyInvested {
 	position: absolute;
-	top: 350px;
-	left: 1055px;
+	top: 135px;
+	left: 1034px;
 	visibility: hidden;
 }
 
 .fullyInvested h3 {
-	color: gray;
-	font-size: 1.5em;
+	color: #c7c8ca;
+	font-size: 1.3em;
 }
 
 .moveOrInvest {
 	position: absolute;
-	top: 390px;
-	left: 1045px;
+	top: 135px;
+	left: 1034px;
 	visibility: hidden;
 }
 
 .moveOrInvest h3 {
-	display: inline-block;
-	color: gray;
-	font-size: 1.6em;
+	color: #c7c8ca;
+	font-size: 1.3em;
 	cursor: pointer;
 }
 
 .moveOrInvest .investFunction  {
-	margin-left: 40px;
+	margin-left: 0px;
 }
 
 .moveOrInvest .doNothing {
-	margin-left: 52px;
+	margin-left: 0px;
 }
 
 .tooFarToInvest {
 	position: absolute;
-	top: 390px;
-	left: 1052px;
+	top: 135px;
+	left: 1034px;
 	visibility: hidden;
 }
 
 .tooFarToInvest h3 {
-	font-size: 1.6em;
+	font-size: 1.3em;
 	color: #c7c8ca;
 	cursor: pointer;
 }
 
 .tooFarToInvest .investFunction {
-	margin-left: 50px;
+	margin-left: 0px;
 }
 
 .tooFarToInvest .doNothing {
-	margin-left: 52px;
+	margin-left: 0px;
 }
 /******************************************************/
-/******************************************************/
 
+/**************** Win Counter *************************/
+.winTracker {
+	position: absolute;
+	left: 1040px;
+	top: 458px;
+}
+/******************************************************/
 /********************* Board **************************/
 /**************** General Properties ******************/
 .tile {
@@ -401,42 +443,6 @@ h3 {
 .I {
 	left: 909px;
 }
-/******************************************************/
-
-/***************** Water Properties *******************/
-/*.rowB .water {
-	border-top-color: white;
-}
-
-.water.B {
-	border-left-color: white;
-}
-
-.water.D {
-	border-right-color: white;
-}
-
-.rowD .water {
-	border-bottom-color: white;
-}
-
-.water.F {
-	border-left-color: white;
-}
-
-.water.H {
-	border-right-color: white;
-}
-
-.rowF .water {
-	border-top-color: white;
-}
-
-.rowH .water {
-	border-bottom-color: white;
-}
-*/
-
 /******************************************************/
 
 /************** Investment Divs ***********************/

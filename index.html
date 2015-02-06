@@ -15,7 +15,7 @@
 
 
 <body>
-<!-- ************** Landing Page ************************ -->
+<!--      ***************** Heading *************************     -->
 <div id="headline">
 	<h1>CONQUER</h1>
 	<div class="navBar">
@@ -24,9 +24,9 @@
 	</div>
 	<hr>
 </div>
-<!-- **************************************************** -->
+<!--     ****************************************************     -->
 
-<!-- ************** Landing Page ************************ -->
+<!--     ************** Landing Page ************************     -->
 <div id="landingPage">
 	<div>
 		<h3>If this is your first time here, we highly recommend you view the ReadMe before beginning play!</h3>
@@ -40,9 +40,43 @@
 		<img src = "./images/yellow.svg" height="300" width="300">
 	</div>
 </div>
-<!-- **************************************************** -->
+<!--     ****************************************************     -->
 
-<!-- **************** Game Board **************************** -->
+<!--     **************** Read Me Page **********************     -->
+<div id="readMePage">
+	<div class="gameStructureAbout">
+		<h2>General</h2>
+		<p>Welcome, and thanks for playing! Conquer is a game focused upon balancing economic growth and military aggression. The game exists in two phases: Economic and Military. The game phase is indicated to the lower left of the board, in blue. Each player has one turn for each phase. The turn is changed using the <span>ENTER</span> key. During the game, prompts will appear on the right side of the board as a result of your actions. <span>CLICK</span> on the action that you would like to perform. The blue tiles in the board are water, and cannot be moved upon.</p>
+	</div>
+	<div class="economicPhaseAbout">
+		<h2>Economic Phase</h2>
+		<p>During the economic phase, players purchase new properties, invest in current properties, and purchase soldiers. New properties are purchased by your <span>TRADER</span>, the left-centered square of corresponding color. The trader can move one space horizontally, vertically, or diagonally once per turn. Move the trader by <span>DOUBLE CLICKING</span>.</p>
+	</div>
+	<div class="costAndReturn">
+		<h2>Cost and Return</h2>
+		<p>Unowned properties cost 100, while properties owned by the opposing player cost 200 + 25 per investment on the property. Properties return a value between 30 and 50 per economic turn, with more central properties returning more. A property can have up to 4 investments, each costing 50. Investments return 10 per economic turn. <span>SOLDIERS</span> cost 75 each and have no limit.</p>
+	</div>
+	<div class="militaryPhaseAbout">
+		<h2>Military Phase</h2>
+		<p>During the military phase, select the army you would like to move by <span>CLICKING</span>. Armies can move one space by <span>DOUBLE CLICKING</span> horizontally or vertically, but cannot move diagonally. Armies owned by the same player will merge permanently if moved on top of one another. Combat between opposing armies is strictly numbers; the higher value army wins while losing the number of soldiers of the lower army. If the armies are at equal value, both armies perish. Armies can conquer opposing players properties, but cannot move where an opposing trader is. Additionally, conquered territories lose existing investments.</p>
+	</div>
+	<div class="victoryAbout">
+		<h2>Sweet Victory!</h2>
+		<p>To claim sweet, sweet victory, claim ownership over the entire board, excluding water tiles. It does not matter whether you conquer through economic or military means. Once you have all the properties, end your turn once more to officially win the game.</p>
+	</div>
+	<div class="readMeAbout">
+		<h2>About</h2>
+		<p>Conquer was made in early 2015 by GitHub user ReidasaurusRex. The game is written primarily in JavaScript, but also contains functionality derived from jQuery, with a large portion of game function dependent upon identifying elements via their top and left css elements. Feel free to contact the maker with questions or concerns at reidhlewis91@gmail.com.</p>
+	</div>
+	<div class="goToGame readMeBottom">
+		<h3>Start Game</h3>
+	</div>
+	<div class="goToGame readMeTop">
+		<h3>Start Game</h3>
+	</div>
+</div>
+<!--     ****************************************************     -->
+<!--     **************** Game Board ************************     -->
 <div id="gameContent">
 
 <!--     *************** Players ****************************     -->
@@ -50,32 +84,7 @@
 <div class="player2"></div>
 <!--     ****************************************************     -->
 
-<!--     ************ Left side indicators ******************     -->
-	<div class="leftColumn">
-		<div class="instructions">
-			<h2 class="instructTitle">Instructions</h2>
-			<h3 class="instructEconomy">Move your trader by double clicking on surrounding tiles, and purchase tiles by responding to the prompt. Unowned tiles will cost 100, while opponent tiles cost 200. Your trader can only move once per turn. Single click on already owned properties to invest or purchase soldiers. Investments cost 50 each, soldiers cost 75. </h3>
-			<h3 class="instructMilitary">Select your army by single clicking, then move the army by double clicking. Merging armies merge permanently. Combat with an opponent is numerically based; the higher number wins. Each army unit can only move once per turn. Armies can only conquer opponent owned territories, and remove investments in the process. </h3>
-		</div>
-	<!-- <h3 class="phaseIndicator">Economy</h3>
-		
-		<div class="playerIndicator">
-			<h3>Player Turn: 1</h3>
-		</div>
-
-		<div class="balances">
-			<h3>Balances</h3>
-			<h3 class="playerNames">Player 1 <span>Player 2</span></h3>
-			<div class="playerBalances">
-				<h3 class="player1Balance">500</h3>
-				<h3 class="player2Balance">500</h3>
-			</div>
-		</div> -->
-
-	</div>
-<!--     *****************************************************    -->
-
-<!--     ****************** Active board ********************* 	  -->
+<!--     ****************** Active board ********************  	  -->
 	<div>
 		<div class="rowA">
 			<div class="tile A v5"></div>
@@ -98,8 +107,8 @@
 		<div class="rowC">
 			<div class="tile A v5"></div>
 			<div class="tile C v3 player1Owned owned"></div>
-			<div class="tile D v3 player2Owned owned"></div>
-			<div class="tile E v3 player2Owned owned"></div>
+			<div class="tile D v3"></div>
+			<div class="tile E v3"></div>
 			<div class="tile F v3"></div>
 			<div class="tile G v3"></div>
 			<div class="tile I v5"></div>
@@ -219,47 +228,59 @@
 		<h3 class="instructEconomy">Move your trader by double clicking on surrounding tiles, and purchase tiles by responding to the prompt. Unowned tiles will cost 100, while opponent tiles cost 200. Your trader can only move once per turn. Single click on already owned properties to invest or purchase soldiers. Investments cost 50 each, soldiers cost 75. </h3>
 		<h3 class="instructMilitary">Select your army by single clicking, then move the army by double clicking. Merging armies merge permanently. Combat with an opponent is numerically based; the higher number wins. Each army unit can only move once per turn. Armies can only conquer opponent owned territories, and remove investments in the process. </h3>
 	</div>
-	<h3 class="phaseIndicator">Economy</h3>
+	<h3 id="phaseIndicator">Economic</h3>
 	<div class="balances">
 		<h3 class="player1Name playerName">Player 1</h3>
 			<h4 class="playerBalance player1Balance">500</h4>
 		<h3 class="player2Name playerName">Player 2</h3>
 			<h4 class="playerBalance player2Balance">500</h4>
 	</div>
+	<div class="turn">
+		<div class="turnSign"></div>
+		<h4 class="yourTurn">Your  Turn</h4>
+	</div>
 
 </div>
 <!--     *****************************************************    -->
 
-<!--     ************ Right side indicators *****************     -->
+<!--     ************ Right side indicators ******************    -->
 	<div class="purchasePrompt">
-			<h3>Purhcase this property?</h3>
+			<h2>Action</h2>
 			<div class="yesNo">
-				<h3 class="purchaseYes">Yes</h3>
-				<h3 class="purchaseNo">No</h3>
+				<h3 class="purchaseYes">Purchase</h3>
+				<h3 class="purchaseNo">Don't Purchase</h3>
 			</div>
-		</div>
+	</div>
 
-		<div class="notEnoughFunds">
+	<div class="notEnoughFunds">
 			<h3>Not Enough Funds</h3>
-		</div>
+	</div>
 
 		
-		<div class="fullyInvested">
+	<div class="fullyInvested">
 			<h3>Fully Invested</h3>
-		</div>
+	</div>
 
-		<div class="tooFarToInvest">
+	<div class="tooFarToInvest">
+			<h2>Action</h2>
 			<h3 class="investFunction">Invest</h3>
 			<h3 class="soldierPurchase">Purchase Soldier</h3>
 			<h3 class="doNothing">Close</h3>
-		</div>
+	</div>
 		
-		<div class="moveOrInvest">
+	<div class="moveOrInvest">
+			<h2>Action</h2>
 			<h3 class = "investMove">Move</h3>
 			<h3 class = "investFunction">Invest</h3>
 			<h3 class="soldierPurchase">Purchase Soldier</h3>
 			<h3 class = "doNothing">Close</h3>
-		</div>
-<!-- **************************************************** -->
+	</div>
+
+	<div class="winTracker">
+		<h2>Wins</h2>
+		<h3 class = "player1WinCounter">Player 1: <span></span></h3>
+		<h3 class = "player2WinCounter">Player 2: <span></span></h3>
+	</div>
+<!--     ****************************************************     -->
 </body>
 </html>

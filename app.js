@@ -14,6 +14,7 @@ function Player(num, styLeft, styTop, coLor) {
 	this.moveCounter = 0;
 	this.balance = 500;
 	this.armyCounter = 0;
+	this.wins = localStorage.getItem("Player "+this.num + " Wins");
 
 }
 // *****************************************************************
@@ -47,10 +48,10 @@ Player.prototype.move = function(thisDom) {
 				if (game.currentPlayer === game.player2) {
 					if ((player1DifLeft !== 0) || (player1DifTop !== 0)) {
 						game.currentTile = thisDom;
-						this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 9))}, 500);
-						this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 18))}, 500);
-						// thisDom.addClass("player"+this.num+"Owned");
-						// See if state correlating to move counter
+						this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 9))}, 250);
+						this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 18))}, 250);
+
+						// Ensuring player only moves once
 						this.moveCounter++;
 						// Ensuring purchase prompt doesn't show if player already owns property
 						if (!thisDom.hasClass("player"+this.num+"Owned")) {
@@ -63,10 +64,10 @@ Player.prototype.move = function(thisDom) {
 				if (game.currentPlayer === game.player1) {
 					if ((player2DifLeft !== 0) || (player2DifTop !== 0)) {
 						game.currentTile = thisDom;
-						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 9))}, 500);
-						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 18))}, 500);
-						// thisDom.addClass("player"+this.num+"Owned");
-						// See if state correlating to move counter
+						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 9))}, 250);
+						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 18))}, 250);
+				
+						// Ensuring player only moves once
 						this.moveCounter++;
 						// Ensuring purchase prompt doesn't show if player already owns property
 						if (!thisDom.hasClass("player"+this.num+"Owned")) {
@@ -91,19 +92,23 @@ function Game() {
 	this.currentPlayer = this.player1;
 	this.oppositePlayer = this.player2;
 	this.currentTile = $(".rowC .C");
+	this.gameStartCheck = 0;
 	this.logicId = setInterval(this.logic.bind(this), 10);
 	
 	// Hiding elements and prompts
+	$("#readMePage").hide().css("visibility", "visible");
+	$("#gameContent").hide().css("visibility", "visible");
 	$(".purchasePrompt").hide().css("visibility", "visible");
 	$(".notEnoughFunds").hide().css("visibility", "visible");
 	$(".tooFarToInvest").hide().css("visibility", "visible");
 	$(".moveOrInvest").hide().css("visibility", "visible");
-	$("#gameContent").hide().css("visibility", "visible");
 	$(".fullyInvested").hide().css("visibility", "visible");
 	$(".navBar h4").hide().css("visibility", "visible");
 	$(".instruction instructTitle").hide();
 	$(".instructions .instructMilitary").hide();
-	$(".instructions .instructEconomy").hide()
+	$(".instructions .instructEconomy").hide();
+	$(".player1WinCounter span").text(this.player1.wins);
+	$(".player2WinCounter span").text(this.player2.wins);
 }
 // ******************************************************************
 
@@ -111,66 +116,84 @@ function Game() {
 Game.prototype.turnChange = function() {
 	var self = this;
 	
+	// Victory check
+	if ($(".tile.player"+this.currentPlayer.num+"Owned").length === 61) {
+		alert("Game, blouses");
+		clearInterval(this.logicId);
+		localStorage.setItem("Player "+this.currentPlayer.num + " Wins", this.currentPlayer.wins ++);
+		$(".player1WinCounter span").text(this.player1.wins);
+		$(".player2WinCounter span").text(this.player2.wins);
+	}
+
 	// Movement reset
 	this.player1.moveCounter = 0;
 	this.player2.moveCounter = 0;
+	
+	if (this.turnCounter < 3) {
+		// Income from properties
+		$(".player"+this.currentPlayer.num+"Owned.tile.v5").each(function(){
+			self.currentPlayer.balance += 30;
+		});
 
-	// Income from properties
-	$(".player"+this.currentPlayer.num+"Owned.tile.v5").each(function(){
-		self.currentPlayer.balance += 30;
-	});
+		$(".player"+this.currentPlayer.num+"Owned.tile.v4").each(function(){
+			self.currentPlayer.balance += 35;
+		});
 
-	$(".player"+this.currentPlayer.num+"Owned.tile.v4").each(function(){
-		self.currentPlayer.balance += 35;
-	});
+		$(".player"+this.currentPlayer.num+"Owned.tile.v3").each(function(){
+			self.currentPlayer.balance += 40;
+		});
 
-	$(".player"+this.currentPlayer.num+"Owned.tile.v3").each(function(){
-		self.currentPlayer.balance += 40;
-	});
+		$(".player"+this.currentPlayer.num+"Owned.tile.v2").each(function(){
+			self.currentPlayer.balance += 45;
+		});
 
-	$(".player"+this.currentPlayer.num+"Owned.tile.v2").each(function(){
-		self.currentPlayer.balance += 45;
-	});
+		$(".player"+this.currentPlayer.num+"Owned.tile.v1").each(function(){
+			self.currentPlayer.balance += 50;
+		});
 
-	$(".player"+this.currentPlayer.num+"Owned.tile.v1").each(function(){
-		self.currentPlayer.balance += 50;
-	});
-
-	// Income from investments
-	$(".invested").each(function(){
-		self.currentPlayer.balance += 10;
-	});
+		// Income from investments
+		$(".invested").each(function(){
+			self.currentPlayer.balance += 10;
+		});
+	}
 
 	if (this.turnCounter < 4) {
 		this.turnCounter++;
 		if (this.turnCounter === 3) {
-			$(".instructions .instructEconomy").fadeOut(500);
-			$(".phaseIndicator").fadeOut(500);
+			$(".instructions .instructEconomy").fadeOut(250);
+			$("#phaseIndicator").fadeOut(250);
 			setTimeout(function() {
-				$(".instructions .instructMilitary").fadeIn(500);
-				$(".phaseIndicator").text("Military");
-				$(".phaseIndicator").fadeIn(500);
-			}, 500);
+				$(".instructions .instructMilitary").fadeIn(250);
+				$("#phaseIndicator").text("Military");
+				$("#phaseIndicator").fadeIn(250);
+			}, 250);
 		}
 	}
 	else if (this.turnCounter === 4) {
 		this.turnCounter = 1;
 		if (this.turnCounter === 1) {
-			$(".instructions .instructMilitary").fadeOut(500);
-			$(".phaseIndicator").fadeOut(500);
+			$(".instructions .instructMilitary").fadeOut(250);
+			$("#phaseIndicator").fadeOut(250);
 			setTimeout(function() {
-				$(".instructions .instructEconomy").fadeIn(500);
-				$(".phaseIndicator").text("Economy");
-				$(".phaseIndicator").fadeIn(500);
-			}, 500);
+				$(".instructions .instructEconomy").fadeIn(250);
+				$("#phaseIndicator").text("Economic");
+				$("#phaseIndicator").fadeIn(250);
+			}, 250);
 		}
 	}
+
 	console.log(this.currentPlayer.num);
+	if (this.turnCounter === 1 || this.turnCounter === 3) {
+		$(".turn").animate({"top": 338}, 250);
+	}
+	if (this.turnCounter ===2 || this.turnCounter === 4) {
+		$(".turn").animate({"top": 383}, 250);
+	}
 
 	// Ensuring no right side prompts are left over
-	$(".purchasePrompt").fadeOut(500);
-	$(".moveOrInvest").fadeOut(500);
-	$(".tooFarToInvest").fadeOut(500);
+	$(".purchasePrompt").fadeOut(250);
+	$(".moveOrInvest").fadeOut(250);
+	$(".tooFarToInvest").fadeOut(250);
 
 	$(".soldier").each(function(){
 		// Ensuring no soldiers are left over selected
@@ -191,7 +214,7 @@ Game.prototype.purchase = function() {
 		self.currentTile.find(".invested").each(function(){cost += 25;});
 		if (this.currentPlayer.balance >= (200 + cost)) {
 			this.currentTile.removeClass("player1Owned player2Owned");
-			$(".purchasePrompt").fadeOut(500);
+			$(".purchasePrompt").fadeOut(250);
 			this.currentPlayer.balance = (this.currentPlayer.balance - (200 + cost));
 			this.currentTile.addClass("player"+this.currentPlayer.num+"Owned");
 			this.currentTile.find(".i1").attr("class", "invested i1 player"+this.currentPlayer.num+"Owned");
@@ -201,7 +224,7 @@ Game.prototype.purchase = function() {
 		}
 
 		else {
-			$(".notEnoughFunds").fadeIn(500);
+			$(".notEnoughFunds").fadeIn(250);
 		}
 	}
 	if (!this.currentTile.hasClass("owned")) {
@@ -209,13 +232,13 @@ Game.prototype.purchase = function() {
 			this.currentPlayer.balance = (this.currentPlayer.balance - 100);
 			this.currentTile.addClass("owned");
 			this.currentTile.addClass("player"+this.currentPlayer.num+"Owned");
-			$(".purchasePrompt").fadeOut(500);
-			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+			$(".purchasePrompt").fadeOut(250);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(250);}, 1200);
 		}
 
 		else {
-			$(".notEnoughFunds").fadeIn(500);
-			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+			$(".notEnoughFunds").fadeIn(250);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(250);}, 1200);
 		}
 	}
 };
@@ -225,6 +248,8 @@ Game.prototype.purchase = function() {
 Game.prototype.investPromptFromClick = function(thisDom) {
 	var self = this;
 	this.currentTile = thisDom;
+	$(".tooFarToInvest").fadeOut(250);
+	$(".moveOrInvest").fadeOut(250);
 		// Difference between clicked tile and player left/right value
 		var difLeft = Math.abs(parseInt(thisDom.css("left"), 10) - parseInt(this.currentPlayer.dom.css("left"), 10));
 		// Difference between clicked tile and player top/bottom value
@@ -240,19 +265,19 @@ Game.prototype.investPromptFromClick = function(thisDom) {
 
 	if (this.turnCounter === 1 || this.turnCounter === 2) {
 		if (thisDom.hasClass("player"+this.currentPlayer.num+"Owned")) {
-			if ((difTop === 30) && (difLeft === 18)) {
-				$(".tooFarToInvest").fadeIn(500);
+			if ((difTop === 18) && (difLeft === 9)) {
+				setTimeout(function(){$(".tooFarToInvest").fadeIn(250);}, 250);
 			}
 			else if (topPar && leftPar) {
 				if (this.currentPlayer.moveCounter === 0) {
-					$(".moveOrInvest").fadeIn(500);
+					setTimeout(function(){$(".moveOrInvest").fadeIn(250);}, 250);
 				}
 				if (this.currentPlayer.moveCounter > 0) {
-					$(".tooFarToInvest").fadeIn(500);
+					setTimeout(function(){$(".tooFarToInvest").fadeIn(250);}, 250);
 				}
 			}
 			else if (topFarPar || leftFarPar) {
-				$(".tooFarToInvest").fadeIn(500);
+				setTimeout(function(){$(".tooFarToInvest").fadeIn(250);}, 250);
 			}
 		}
 	}
@@ -268,11 +293,11 @@ Game.prototype.invest = function(tileDom) {
 				this.currentTile.append("<div class = \"invested i1 player"+this.currentPlayer.num+"Owned\"></div>");
 				this.currentTile.addClass("invested1");
 				this.currentPlayer.balance = (this.currentPlayer.balance - 50);
-				tileDom.parent().fadeOut(500);
+				tileDom.parent().fadeOut(250);
 			}
 			else {
-				$(".notEnoughFunds").fadeIn(500);
-				setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+				$(".notEnoughFunds").fadeIn(250);
+				setTimeout(function() {$(".notEnoughFunds").fadeOut(250);}, 1200);
 			}
 	}
 
@@ -281,11 +306,11 @@ Game.prototype.invest = function(tileDom) {
 			this.currentTile.append("<div class = \"invested i2 player"+this.currentPlayer.num+"Owned\"></div>");
 			this.currentTile.addClass("invested2");
 			this.currentPlayer.balance = (this.currentPlayer.balance - 50);
-			tileDom.parent().fadeOut(500);
+			tileDom.parent().fadeOut(250);
 		}
 		else {
-			$(".notEnoughFunds").fadeIn(500);
-			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+			$(".notEnoughFunds").fadeIn(250);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(250);}, 1200);
 		}
 	}
 
@@ -294,11 +319,11 @@ Game.prototype.invest = function(tileDom) {
 			this.currentTile.append("<div class = \"invested i3 player"+this.currentPlayer.num+"Owned\"></div>");
 			this.currentTile.addClass("invested3");
 			this.currentPlayer.balance = (this.currentPlayer.balance - 50);
-			tileDom.parent().fadeOut(500);
+			tileDom.parent().fadeOut(250);
 		}
 		else {
-			$(".notEnoughFunds").fadeIn(500);
-			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);	
+			$(".notEnoughFunds").fadeIn(250);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(250);}, 1200);	
 		}
 	}
 
@@ -307,17 +332,17 @@ Game.prototype.invest = function(tileDom) {
 			this.currentTile.append("<div class = \"invested i4 player"+this.currentPlayer.num+"Owned\"></div>");
 			this.currentTile.addClass("invested4");
 			this.currentPlayer.balance = (this.currentPlayer.balance - 50);
-			tileDom.parent().fadeOut(500);
+			tileDom.parent().fadeOut(250);
 		}
 		else {
-			$(".notEnoughFunds").fadeIn(500);
-			setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+			$(".notEnoughFunds").fadeIn(250);
+			setTimeout(function() {$(".notEnoughFunds").fadeOut(250);}, 1200);
 		}
 	}
 
 	else if (this.currentTile.hasClass("invested4")) {
-		$(".fullyInvested").fadeIn(500);
-		setTimeout(function() {$(".fullyInvested").fadeOut(500);}, 1500);
+		$(".fullyInvested").fadeIn(250);
+		setTimeout(function() {$(".fullyInvested").fadeOut(250);}, 1250);
 	}
 };
 // ******************************************************************
@@ -326,7 +351,7 @@ Game.prototype.invest = function(tileDom) {
 Game.prototype.purchaseSoldier = function(tileDom) {
 	var self = this;
 	var styTop = (parseInt(this.currentTile.css("top"), 10) + 18 + "px");
-	var styLeft = (parseInt(this.currentTile.css("left"), 10) + 30 + "px");
+	var styLeft = (parseInt(this.currentTile.css("left"), 10) + 28 + "px");
 	var selector = ".player" + this.currentPlayer.num + "Owned.soldier";	
 
 	// Ensuring player has enough dolla dolla bills y'all
@@ -334,7 +359,7 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 		var tempArr = [];
 		$(selector).each(function() {
 			if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
-				($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
+				($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 28 + "px"))) {
 					tempArr.push($(this));
 					console.log(tempArr.length);
 			}
@@ -356,7 +381,7 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 		if (tempArr.length === 1) {
 			$(selector).each(function() {
 				if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
-					($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
+					($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 28 + "px"))) {
 					$(this).text(parseInt($(this).text(), 10) + 1);
 					self.currentPlayer.balance = (self.currentPlayer.balance - 75);
 				}
@@ -366,8 +391,8 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 
 	// If the player is too broke
 	else if (this.currentPlayer.balance < 75) {
-		$(".notEnoughFunds").fadeIn(500);
-		setTimeout(function() {$(".notEnoughFunds").fadeOut(500);}, 1200);
+		$(".notEnoughFunds").fadeIn(250);
+		setTimeout(function() {$(".notEnoughFunds").fadeOut(250);}, 1200);
 	}
 };
 // ******************************************************************
@@ -411,12 +436,12 @@ Game.prototype.armyMove = function(thisDom) {
 		// Ensuring army only moves once
 		if (!this.currentArmy.hasClass("moved")) {
 			// Ensuring player move distance equals one square, no diagonal
-			if (((topPar && difLeft === 30) || (leftPar && difTop === 18)) && ((difTop !== 18) || (difLeft !== 30))) {
+			if (((topPar && difLeft === 28) || (leftPar && difTop === 18)) && ((difTop !== 18) || (difLeft !== 28))) {
 				// Ensuring army cannot move to a tile containing opposite player
 				if ((oppDifLeft !== 9) || (oppDifTop !== 18)) {
 					// Moving player
-					this.currentArmy.animate({"left": ((parseInt((thisDom.css("left")), 10) + 30))}, 500);
-					this.currentArmy.animate({"top": ((parseInt((thisDom.css("top")), 10) + 18))}, 500);
+					this.currentArmy.animate({"left": ((parseInt((thisDom.css("left")), 10) + 28))}, 250);
+					this.currentArmy.animate({"top": ((parseInt((thisDom.css("top")), 10) + 18))}, 250);
 					console.log(self.currentTile);
 					console.log(self.oppositePlayer);
 					if (this.currentTile.hasClass("player"+this.currentPlayer.num+"Owned")) {
@@ -430,7 +455,7 @@ Game.prototype.armyMove = function(thisDom) {
 					// Combinging same player armies if present
 					$(".soldier.player"+this.currentPlayer.num+"Owned").each(function() {
 						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
-							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
+							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 28 + "px"))) {
 							self.currentArmy.text(parseInt(self.currentArmy.text(), 10) + (parseInt($(this).text(), 10)));
 							$(this).remove();
 						}
@@ -441,7 +466,7 @@ Game.prototype.armyMove = function(thisDom) {
 						var thisNumber = parseInt($(this).text(), 10);
 						var playerNumber = parseInt(self.currentArmy.text(), 10);
 						if (($(this).css("top") === (parseInt(self.currentTile.css("top"), 10) + 18 + "px")) && 
-							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 30 + "px"))) {
+							($(this).css("left") === (parseInt(self.currentTile.css("left"), 10) + 28 + "px"))) {
 							console.log("opposite player present");
 							tempArr.push($(this));
 							// Current player wins
@@ -494,16 +519,38 @@ Game.prototype.armyMove = function(thisDom) {
 Game.prototype.attachListeners = function() {
 	var self = this;
 		
+		// ReadMe Show
+		$(".viewReadMe").on("click", function() {
+			$("#landingPage").fadeOut(600);
+			$("#gameContent").fadeOut(600);
+			$(".navBar .viewReadMe").fadeOut(600);
+			$(".navBar .startNewGame").fadeOut(600);
+			setTimeout(function() {
+				$("#readMePage").fadeIn(600);
+			}, 800);
+		});
+
+		$(".goToGame").on("click", function() {
+			self.gameStartCheck ++;
+			$("#readMePage").fadeOut(600);
+			setTimeout(function() {
+				$("#gameContent").fadeIn(1250);
+				$(".navBar .viewReadMe").fadeIn(1250);
+				$(".navBar .startNewGame").fadeIn(1250);
+			}, 800);
+		});
+
 		// New Game
-		$(".firstGame").on("click", function(){
+		$(".firstGame").on("click", function() {
 			$("#landingPage").fadeOut(600);
 			setTimeout(function(){
-				$("#gameContent").fadeIn(1500);
-				$(".navBar .viewReadMe").fadeIn(1500);
-				$(".navBar .startNewGame").fadeIn(1500);
-				$(".instructions .instructTitle").fadeIn(1500);
-				$(".instructions .instructEconomy").fadeIn(1500);
-			}, 1000);
+				$("#gameContent").fadeIn(1250);
+				$(".navBar .viewReadMe").fadeIn(1250);
+				$(".navBar .startNewGame").fadeIn(1250);
+				$(".instructions .instructTitle").fadeIn(1250);
+				$(".instructions .instructEconomy").fadeIn(1250);
+			}, 800);
+			self.gameStartCheck ++;
 		});
 
 		// Tile dblclick
@@ -538,7 +585,7 @@ Game.prototype.attachListeners = function() {
 		$(".investMove").on("click", function(event) {
 			var tileDom = self.currentTile;
 			self.currentPlayer.move(tileDom);
-			$(".moveOrInvest").fadeOut(500);
+			$(".moveOrInvest").fadeOut(250);
 		});
 
 		// Purchase Soldier
@@ -549,7 +596,7 @@ Game.prototype.attachListeners = function() {
 
 		// Hide invest prompt
 		$(".doNothing").on("click", function(event) {
-			$(this).parent().fadeOut(500);
+			$(this).parent().fadeOut(250);
 		});
 
 		// Enter key turn change
@@ -566,7 +613,7 @@ Game.prototype.attachListeners = function() {
 
 		// No purchase click
 		$(".purchaseNo").on("click", function() {
-			$(".purchasePrompt").fadeOut(500);
+			$(".purchasePrompt").fadeOut(250);
 		});
 };
 // ******************************************************************
@@ -587,17 +634,12 @@ Game.prototype.logic = function() {
 		$(".playerIndicator h3").text("Player Turn: 2");
 	}
 
+	if (this.gameStartCheck === 1) {
+		$(".goToGame h3").text("Return To Game");
+	}
+
 	$(".player1Balance").text(this.player1.balance);
 	$(".player2Balance").text(this.player2.balance);
-
-
-	// Victory check
-	// if ($(".tile.player"+this.currentPlayer.num+"Owned").length === 4) {
-	// 	alert("Game, blouses");
-	// 	clearInterval(this.logicId);
-	// }
-	$(".playerBalances h3:first-child").text(this.player1.balance);
-	$(".playerBalances h3:last-child").text(this.player2.balance);
 };
 // ******************************************************************
 var game = new Game();
