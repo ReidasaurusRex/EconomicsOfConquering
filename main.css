@@ -342,10 +342,25 @@ h3 {
 }
 /******************************************************/
 
+/******************* Reset Prompt *********************/
+.gameResetPrompt {
+	position: absolute;
+	top: 135px;
+	left: 1034px;
+	visibility: hidden;
+}
+
+.gameResetPrompt h3 {
+	font-size: 1.3em;
+	color: #c7c8ca;
+	cursor: pointer;
+}
+/******************************************************/
+
 /**************** Win Counter *************************/
 .winTracker {
 	position: absolute;
-	left: 1040px;
+	left: 1034px;
 	top: 458px;
 }
 /******************************************************/

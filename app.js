@@ -35,6 +35,14 @@ Player.prototype.move = function(thisDom) {
 	// Player 1 same left check
 	var playerOppDifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.oppositePlayer.dom.css("left"), 10) - 9));
 
+	var tempArr = [];
+	$(".soldier.player"+game.oppositePlayer.num+"Owned").each(function() {
+		if (($(this).css("top") === (parseInt(game.currentTile.css("top"), 10) + 18 + "px")) && 
+			($(this).css("left") === (parseInt(game.currentTile.css("left"), 10) + 28 + "px"))) {
+			tempArr.push($(this));
+		}
+	});
+
 	if (game.turnCounter === 1 || game.turnCounter === 2) {
 		// Ensuring player only moves once
 		if (this.moveCounter === 0) {
@@ -42,16 +50,18 @@ Player.prototype.move = function(thisDom) {
 			if ((topPar && leftPar) && ((difTop != 18) || (difLeft != 9))) {
 				// Ensuring players cannot move on top of each other
 				if ((playerOppDifLeft !== 0) || (playerOppDifTop !== 0)) {
-					game.currentTile = thisDom;
-					this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 9))}, 250);
-					this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 18))}, 250);
-					// Ensuring player only moves once
-					this.moveCounter++;
-					// Ensuring purchase prompt doesn't show if player already owns property
-					if (!thisDom.hasClass("player"+this.num+"Owned")) {
-						setTimeout(function() {$(".purchasePrompt").fadeIn(250);}, 250);
-						$(".moveOrInvest").fadeOut(250);
-						$(".tooFarToInvest").fadeOut(250);
+					if (tempArr.length === 0) {
+						game.currentTile = thisDom;
+						this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 9))}, 250);
+						this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 18))}, 250);
+						// Ensuring player only moves once
+						this.moveCounter++;
+						// Ensuring purchase prompt doesn't show if player already owns property
+						if (!thisDom.hasClass("player"+this.num+"Owned")) {
+							setTimeout(function() {$(".purchasePrompt").fadeIn(250);}, 250);
+							$(".moveOrInvest").fadeOut(250);
+							$(".tooFarToInvest").fadeOut(250);
+						}
 					}
 				}
 			}
@@ -81,9 +91,10 @@ function Game() {
 	$(".moveOrInvest").hide().css("visibility", "visible");
 	$(".fullyInvested").hide().css("visibility", "visible");
 	$(".navBar h4").hide().css("visibility", "visible");
-	$(".instruction instructTitle").hide();
+	$(".instructions instructTitle").hide();
 	$(".instructions .instructMilitary").hide();
 	$(".instructions .instructEconomy").hide();
+	$(".gameResetPrompt").hide().css("visibility", "visible");
 	
 	// Showing wins
 	$(".player1WinCounter span").text(this.player1.wins);
@@ -376,8 +387,6 @@ Game.prototype.purchaseSoldier = function(tileDom) {
 };
 // ******************************************************************
 
-
-
 // ****************** Army Select Function **************************
 Game.prototype.armySelect = function(armyDom) {
 	if (this.turnCounter === 3 || this.turnCounter === 4) {
@@ -494,6 +503,57 @@ Game.prototype.armyMove = function(thisDom) {
 };
 // ******************************************************************
 
+// ******************* Game Reset Prompt ****************************
+Game.prototype.resetPrompt = function() {
+	var self = this;
+	$(".tooFarToInvest").fadeOut(500);
+	$(".moveOrInvest").fadeOut(500);
+	$(".purchasePrompt").fadeOut(500);
+	setTimeout(function() {$(".gameResetPrompt").fadeIn(500);
+	$(".reallyGameReset").fadeIn(500);
+	$(".dontGameRest").fadeIn(500);
+	}, 500);
+};
+// ******************************************************************
+
+// ******************* Game Reset Function **************************
+Game.prototype.resetFunction = function() {
+	var self = this;
+	$("#gameContent").fadeOut(500);
+	$(".instructions").fadeOut(500);
+	$(".gameResetPrompt").fadeOut(500);
+	setTimeout(function(){
+		self.player1.balance = 500;
+		self.player2.balance = 500;
+		self.turnCounter = 1;
+		self.player1.dom.css("left", "630px");
+		self.player1.dom.css("top", "264px");
+		self.player2.dom.css("left", "822px");
+		self.player2.dom.css("top", "456px");
+		self.player1.armyCounter = 0;
+		self.player2.armyCounter = 0;
+		$(".player1Owned").each(function(){
+			$(this).removeClass("player1Owned owned");
+		});
+		$(".player2Owned").each(function(){
+			$(this).removeClass("player2Owned owned");
+		});
+		$(".soldier").each(function() {
+			$(this).remove();
+		});
+		$(".invested").each(function() {
+			$(this).remove();
+		});
+		$(".rowC .C").addClass("player1Owned owned");
+		$(".rowG .G").addClass("player2Owned owned");
+		$(".turn").css("top", "338px");
+	}, 500);
+	setTimeout(function() {
+		$("#gameContent").fadeIn(1200);
+		$(".instructions").fadeIn(1200);
+	}, 600);
+};
+
 // ******************** Listener Attach *****************************
 Game.prototype.attachListeners = function() {
 	var self = this;
@@ -509,6 +569,7 @@ Game.prototype.attachListeners = function() {
 			}, 800);
 		});
 
+		// Go to game from ReadMe
 		$(".goToGame").on("click", function() {
 			self.gameStartCheck ++;
 			$("#readMePage").fadeOut(600);
@@ -516,10 +577,16 @@ Game.prototype.attachListeners = function() {
 				$("#gameContent").fadeIn(1250);
 				$(".navBar .viewReadMe").fadeIn(1250);
 				$(".navBar .startNewGame").fadeIn(1250);
+				if (self.turnCounter < 3) {
+					$(".instructEconomy").fadeIn(1250);
+				}
+				else if (self.turnCounter >= 3) {
+					$(".instructMilitary").fadeIn(1250);
+				}
 			}, 800);
 		});
 
-		// New Game
+		// New Game from landing page
 		$(".firstGame").on("click", function() {
 			$("#landingPage").fadeOut(600);
 			setTimeout(function(){
@@ -530,6 +597,20 @@ Game.prototype.attachListeners = function() {
 				$(".instructions .instructEconomy").fadeIn(1250);
 			}, 800);
 			self.gameStartCheck ++;
+		});
+
+		// Game reset prompt
+		$(".startNewGame").on("click", function() {
+			self.resetPrompt();
+		});
+
+		// Game reset
+		$(".reallyGameReset").on("click", function() {
+			self.resetFunction();
+		});
+		// Game reset close
+		$(".dontGameReset").on("click", function() {
+			$(".gameResetPrompt").fadeOut(500);
 		});
 
 		// Tile dblclick
