@@ -31,50 +31,27 @@ Player.prototype.move = function(thisDom) {
 	// Max top/bottom difference allowed
 	var topPar = (difTop < 67);
 	// Player 1 same top check
-	var player1DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player1.dom.css("top"), 10) - 18));
+	var playerOppDifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.oppositePlayer.dom.css("top"), 10) - 18));
 	// Player 1 same left check
-	var player1DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player1.dom.css("left"), 10) - 9));
-	// Player 2 same top check
-	var player2DifTop = Math.abs(parseInt(thisDom.css("top"), 10) - (parseInt(game.player2.dom.css("top"), 10) - 18));
-	// Player 2 same left check
-	var player2DifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.player2.dom.css("left"), 10) - 9));
+	var playerOppDifLeft = Math.abs(parseInt(thisDom.css("left"), 10) - (parseInt(game.oppositePlayer.dom.css("left"), 10) - 9));
 
 	if (game.turnCounter === 1 || game.turnCounter === 2) {
 		// Ensuring player only moves once
 		if (this.moveCounter === 0) {
 			// Ensuring player move distance equals one square
 			if ((topPar && leftPar) && ((difTop != 18) || (difLeft != 9))) {
-				// Ensuring player2 cannot move on top of player1
-				if (game.currentPlayer === game.player2) {
-					if ((player1DifLeft !== 0) || (player1DifTop !== 0)) {
-						game.currentTile = thisDom;
-						this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 9))}, 250);
-						this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 18))}, 250);
-
-						// Ensuring player only moves once
-						this.moveCounter++;
-						// Ensuring purchase prompt doesn't show if player already owns property
-						if (!thisDom.hasClass("player"+this.num+"Owned")) {
-							setTimeout(function() {$(".purchasePrompt").fadeIn(250);}, 250);
-							$(".moveOrInvest").fadeOut(250);
-							$(".tooFarToInvest").fadeOut(250);
-						}
-					}
-				}
-				if (game.currentPlayer === game.player1) {
-					if ((player2DifLeft !== 0) || (player2DifTop !== 0)) {
-						game.currentTile = thisDom;
-						this.dom.animate({"left": ((parseInt((thisDom.css("left")), 10) + 9))}, 250);
-						this.dom.animate({"top": ((parseInt((thisDom.css("top")), 10) + 18))}, 250);
-				
-						// Ensuring player only moves once
-						this.moveCounter++;
-						// Ensuring purchase prompt doesn't show if player already owns property
-						if (!thisDom.hasClass("player"+this.num+"Owned")) {
-							setTimeout(function() {$(".purchasePrompt").fadeIn(250);}, 250);
-							$(".moveOrInvest").fadeOut(250);
-							$(".tooFarToInvest").fadeOut(250);
-						}
+				// Ensuring players cannot move on top of each other
+				if ((playerOppDifLeft !== 0) || (playerOppDifTop !== 0)) {
+					game.currentTile = thisDom;
+					this.dom.animate({"left": ((parseInt((game.currentTile.css("left")), 10) + 9))}, 250);
+					this.dom.animate({"top": ((parseInt((game.currentTile.css("top")), 10) + 18))}, 250);
+					// Ensuring player only moves once
+					this.moveCounter++;
+					// Ensuring purchase prompt doesn't show if player already owns property
+					if (!thisDom.hasClass("player"+this.num+"Owned")) {
+						setTimeout(function() {$(".purchasePrompt").fadeIn(250);}, 250);
+						$(".moveOrInvest").fadeOut(250);
+						$(".tooFarToInvest").fadeOut(250);
 					}
 				}
 			}
@@ -107,6 +84,8 @@ function Game() {
 	$(".instruction instructTitle").hide();
 	$(".instructions .instructMilitary").hide();
 	$(".instructions .instructEconomy").hide();
+	
+	// Showing wins
 	$(".player1WinCounter span").text(this.player1.wins);
 	$(".player2WinCounter span").text(this.player2.wins);
 }
