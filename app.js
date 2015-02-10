@@ -107,7 +107,7 @@ Game.prototype.turnChange = function() {
 	var self = this;
 	
 	// Victory check
-	if ($(".tile.player"+this.currentPlayer.num+"Owned").length === 4) {
+	if ($(".tile.player"+this.currentPlayer.num+"Owned").length === 71) {
 		alert("Game, blouses");
 		clearInterval(this.logicId);
 		localStorage.setItem("Player "+this.currentPlayer.num + " Wins", this.currentPlayer.wins ++);
